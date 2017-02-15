@@ -1,0 +1,176 @@
+<!--footer start-->
+<div class="facebook-section">
+	<div class="container">
+		<div class="face-top">
+			<h5>
+				<a href="mailto:{$cfg_index['web_exmail']}" title="邮件联系"><img src="<?php echo C('FRONT_RES_PATH');?>images/mailto.png" style="height:50px !important;" /></a>
+				<a href="http://www.weibo.com/{$cfg_index['web_weibo']}" target="_blank" title="关注微博"><img src="<?php echo C('FRONT_RES_PATH');?>images/weibo.png" style="height:50px !important;" /></a>
+				<span>
+				<!--友情链接-->
+				<b><a href="http://wpa.qq.com/msgrd?v=3&uin={$cfg_index.web_frdLink_qq}&site=www.wxrym.cn&menu=yes" target="_blank">申请友链</a></b>
+				<volist name="frdLink_list" id="fdL" key="k">
+				<a href="{$fdL.f_link}" target="_blank" rel="nofollow">{$fdL.f_name}</a>
+				</volist>
+				</span>
+			</h5>
+		</div>
+	</div>
+</div>
+<div class="copyright_box">
+	&copy; <?php echo date('Y',time());?> <a href="/">微信任意门</a>&nbsp;&nbsp;
+	（<a href="http://www.miibeian.gov.cn/" target="_blank" rel="nofollow">{$cfg_index['web_icp']}</a>）&nbsp;&nbsp;
+	Powered by <?php echo htmlspecialchars_decode($cfg_index['web_company']);?>&nbsp;&nbsp;
+	<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258484231'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1258484231%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>&nbsp;&nbsp;
+	<a href="http://tongji.baidu.com/web/20120581/overview/sole?siteId=8586456" target="_blank" rel="nofollow"><img src="<?php echo C('FRONT_RES_PATH');?>images/bd_tongji.gif" /></a>
+</div>
+<ul class="scroll">
+	<li><a class="li sc_top"></a></li>
+	<li><a class="li sc_search" onclick="show_search()"></a></li>
+	<li><a class="li sc_contact" href="{$do_main}/about"></a></li>
+	<li><a class="li sc_favorite" onclick="addFavoritepage()"></a></li>
+	<li>
+		<a class="li sc_wechat"></a>
+		<div class="div fixed_wechat">
+			<img src="<?php echo C('FRONT_RES_PATH');?>images/weixin.png" />
+		</div>
+	</li>
+	<li>
+		<a class="li sc_share"></a>
+		<div class="div fixed_share">
+			<div class="share_box">
+				<span class="share_title">分享网站到：</span>
+				<div class="bdsharebuttonbox bdshare-button-style1-16" data-tag="share_2" data-bd-bind="1447050971198" style="margin-top:10px;">
+					<a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin">微信</a>
+					<a title="分享到QQ好友" href="#" class="bds_sqq" data-cmd="sqq">QQ好友</a>
+					<a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone">QQ空间</a>
+					<a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq">腾讯微博</a>
+					<a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren">人人网</a>
+					<a title="分享到腾讯朋友" href="#" class="bds_tqf" data-cmd="tqf">腾讯朋友</a>
+					<a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina">新浪微博</a>
+					<a title="分享到百度贴吧" href="#" class="bds_tieba" data-cmd="tieba">百度贴吧</a>
+					<a title="分享到百度空间" href="#" class="bds_hi" data-cmd="hi">百度空间</a>
+					<a title="分享到我的搜狐" href="#" class="bds_isohu" data-cmd="isohu">我的搜狐</a>
+				</div>
+				<script>
+					window._bd_share_config={
+						"common":{
+							"bdSnsKey":{},
+							"bdText":"",
+							"bdMini":"2",
+							"bdMiniList":false,
+							"bdPic":"",
+							"bdStyle":"1",
+							"bdSize":"16"
+						},
+						"share":{},
+						/*"image":{
+							"viewList":["weixin","qzone","tsina","tqq","renren"],
+							"viewText":"分享到：",
+							"viewSize":"16"
+						},
+						"selectShare":{
+							"bdContainerClass":null,
+							"bdSelectMiniList":["weixin","qzone","tsina","tqq","renren"]
+						}*/
+					};
+					with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+				</script>
+			</div>
+		</div>
+	</li>
+	<li><a class="li sc_bottom"></a></li>
+</ul>
+<script>
+(function(){
+   var src = document.location.protocol +'//js.passport.qihucdn.com/11.0.1.js?78c6e77b955665bec7da675977a93abd';
+   document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script>
+<script type="text/javascript">
+$(function(){
+	$('#t_1').html($('.active').find('a').html());
+	$('#t_2').html($('.active').find('a').html());
+	
+	var a = document.getElementsByTagName("a");
+	for(i=0;i<a.length;i++){
+		if (a[i].href!='' && a[i].href!='javascript:;' && a[i].href!='javascript:void(0);')
+			a[i].target="_blank";
+	}
+});
+jQuery(document).ready(function($){
+	$('.sc_top').click(function(){
+		$('html,body').animate({scrollTop: '0px'}, 800);
+	}); 
+	$('.sc_bottom').click(function(){
+		$('html,body').animate({scrollTop: document.body.clientHeight+'px'}, 800);
+	});
+});
+
+$(document).ready(function(){
+    $("ul.scroll li").hover(function() {
+        $(this).find(".div").css("display","block");
+    }, function() {
+        $(this).find(".div").css("display","none");
+    });
+	$("li .div").hover(function(){
+		$(this).prev('a').addClass('hover');
+	}, function(){
+		$(this).prev('a').removeClass('hover');
+	});
+});
+</script>
+<link href="<?php echo C('FRONT_RES_PATH');?>css/search.css" type="text/css" rel="stylesheet" />
+<div class="wx_search_box" style="display:none">
+	<form class="form-wrapper cf" action="{$do_main}/wx" method="post">
+		<input type="hidden" name="cat_id" value="{$_REQUEST['cat_id']}" />
+		<input type="text" placeholder="输入公众号名称或 ID" name="wxno_srch" required>
+		<button type="submit">搜 索</button>
+	</form>
+</div>
+<?php 
+require_once '/Mobile_Detect.php';
+$mobile_det = new Mobile_Detect();
+if ($mobile_det->isMobile()){
+?>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/mobile/m.layer.js"></script>
+<script type="text/javascript">
+function show_search(){
+	//页面层
+	layer.open({
+		type: 1,
+		content: $('.wx_search_box'),
+		anim: 0,
+		shadeClose: true,
+		shade: 0.5,
+		title: false,
+		skin: 'search_layer',
+	});
+}
+</script>
+<?php
+}else{
+?>
+<script type="text/javascript">
+layer.config({
+    extend: ['skin/espresso/style.css'] //加载新皮肤
+});
+function show_search(){
+	layer.open({
+		type: 1,
+		shade: 0.5,
+		shadeClose: true,
+		closeBtn: true,
+		title: false, //不显示标题
+		//skin: 'layer-ext-espresso',
+		skin: 'search_layer',
+		area: ['50%',''],
+		content: $('.wx_search_box'), //捕获的元素
+	});
+}
+</script>
+<?php
+}
+?>
+<!--footer end-->
+</body>
+</html>

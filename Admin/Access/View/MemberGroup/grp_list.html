@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>管理员群组列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 权限管理 
+	<span class="c-gray en">&gt;</span> 管理员群组列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="frm_search">
+		<form action="{:U('Access/MemberGroup/gList')}" method="post" id="frm_srch_admin">
+			<input type="text" class="input-text" style="width:250px" placeholder="输入群组名称" name="srch_text" value="{$_REQUEST['srch_text']}" datatype="*" />
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜群组</button>&nbsp;
+			<a href="{:U('Access/MemberGroup/gList')}" class="btn btn-danger radius">清除查询条件</a>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="javascript:;" onclick="grp_edit('','')" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加群组
+			</a>
+		</span>
+		<span class="r">共有数据：<strong><?php echo count($member_group_list);?></strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="11">管理员群组列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="g_ids[]" value="" /></th>
+				<th width="6%">组编号</th>
+				<th width="14%">群组名称</th>
+				<th width="10%">组成员数量</th>
+				<th width="14%">添加时间</th>
+				<th width="34%">备注</th>
+				<th width="8%">是否启用</th>
+				<th width="12%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="member_group_list" id="grp_list" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$member_group_list.grp_id}" name="g_ids[]" /></td>
+				<td>{$grp_list.grp_id}</td>
+				<td>{$grp_list.grp_name}</td>
+				<td>{$grp_list.grp_member_count}</td>
+				<td>{$grp_list.add_time|subtext=19}</td>
+				<td>{$grp_list.desc}</td>
+				<td class="td-status">
+					<if condition="$grp_list['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1' and $grp_list['grp_id'] neq '1'">
+					<if condition="$grp_list['is_delete'] eq '1'">
+					<a onClick="grp_stop(this,'{$grp_list['grp_id']}','{$grp_list['grp_name']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="grp_stop(this,'{$grp_list['grp_id']}','{$grp_list['grp_name']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="javascript:;" onclick="grp_edit('{$grp_list['grp_id']}','{$grp_list['grp_name']}')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_access neq '1'">
+					<a title="权限" href="{:U('Access/MemberGroup/gAccess',array('gid'=>$grp_list['grp_id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe60e;</i>
+					</a>
+				</if>
+					<a title="组成员" href="{:U('Access/MemberGroup/gMembers',array('gid'=>$grp_list['grp_id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe60a;</i>
+					</a>
+				<if condition="$unabled_del neq '1' and $grp_list['grp_id'] neq '1'">
+					<a title="删除" href="javascript:;" onclick="grp_del(this,'{$grp_list['grp_id']}','{$grp_list['grp_name']}','{$grp_list['grp_member_count']}')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function grp_edit(grp_id,grp_name){
+	var show_content = 
+		"<form action=\"{:U('Access/MemberGroup/gEdit')}\" method=\"post\" class=\"form form-horizontal\" id=\"form_grp_edit\" onsubmit=\"return chk_name()\" style=\"margin:5px 0px;\">"+
+		"	<input type=\"hidden\" name=\"old_name\" value=\""+grp_name+"\" />"+
+		"	<input type=\"hidden\" name=\"grp_id\" value=\""+grp_id+"\" />"+
+		"	<div class=\"row cl\">"+
+		"		<label class=\"form-label col-3\"><span class=\"c-red\">*</span>群组名称：</label>"+
+		"		<div class=\"formControls col-5\" style=\"width:69%;\">"+
+		"			<input type=\"text\" class=\"input-text\" value=\""+grp_name+"\" placeholder=\"\" id=\"grp_name\" name=\"grp_name\" datatype=\"*\" />"+
+		"		</div>"+
+		"	</div>"+
+		"	<div class=\"row cl\">"+
+		"		<label class=\"form-label col-3\">备注说明：</label>"+
+		"		<div class=\"formControls col-5\" style=\"width:69%;\">"+
+		"			<textarea name=\"desc\" cols=\"\" rows=\"\" class=\"textarea\" placeholder=\"说点什么...200个字符以内\" dragonfly=\"true\" onKeyUp=\"textarealength(this,200)\" maxlength=\"200\"></textarea>"+
+		"			<p class=\"textarea-numberbar\"><em class=\"textarea-length\">0</em>/200</p>"+
+		"		</div>"+
+		"	</div>"+
+		"	<div class=\"row cl\">"+
+		"		<div class=\"col-9 col-offset-3\">"+
+		"			<input class=\"btn btn-primary radius\" type=\"submit\" value=\"&nbsp;提&nbsp;交&nbsp;\" />&nbsp;&nbsp;"+
+		"			<input class=\"btn btn-default layui-layer-close radius\" type=\"button\" value=\"&nbsp;取&nbsp;消&nbsp;\" />"+
+		"		</div>"+
+		"	</div>"+
+		"</form>";
+	layer.open({
+		type: 1,
+		area: ['500px', '220px'],
+		title: false,
+		closeBtn: true,
+		shadeClose: false,
+		skin: 'yourclass',
+		content: show_content
+	})
+}
+function chk_name(){
+	if ($('#grp_name').val()==''){
+		layer.alert('群组名称不能为空！',{icon:0});
+		$('#grp_name').focus();
+		return false;
+	}else{
+		return true;
+	}
+}
+function grp_stop(obj,gid,gname,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"grp_stop(this,'"+gid+"','"+gname+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/MemberGroup/gStop")}',
+				async: false,
+				data: "gid="+gid+"&gname="+gname+"&met=stop",
+				//dataType: "text",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+					$(obj).remove();
+					layer.msg('已禁用！',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('禁用账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"grp_stop(this,'"+gid+"','"+gname+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/MemberGroup/gStop")}',
+				async: false,
+				data: "gid="+gid+"&gname="+gname+"&met=start",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用！', {icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('启用账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+function grp_del(obj,gid,gname,gmcount){
+	if (gmcount > 0){
+		//layer.alert('请先将本组下成员清空或移至其他分组！',{icon:0});
+		layer.confirm('本组下仍有成员未清理，是否前往成员管理？',
+			{btn:['前往成员管理','取消']},
+			function(){
+				window.location.href = "{:U('Access/Index/mList/grp_id/"+gid+"')}";
+			},
+			function(){
+				
+			}
+		);
+	}else{
+		layer.confirm('确定要删除吗？',{icon:0},function(index){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/MemberGroup/gDel")}',
+				async: false,
+				data: "gid="+gid+"&gname="+gname,
+				success:function(msg){
+					$(obj).parents("tr").remove();
+					layer.msg('已删除!',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('删除账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

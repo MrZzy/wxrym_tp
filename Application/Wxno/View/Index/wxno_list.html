@@ -1,0 +1,55 @@
+<include file="./Public/header.html" />
+<!--content start-->
+<div class="content">
+	<div class="history-section">
+		<div class="container" id="list_container">
+			<div id="wxno_container">
+				<h3><?php 
+				if ($sel_type=='new') echo '任意门最新收录 _ 微信公众号列表';
+				else if ($sel_type=='rec') echo '任意门推荐 _ 微信公众号列表';
+				else if ($sel_type=='hot') echo '热门公众号 _ 微信公众号列表';
+				else if ($sel_type=='best') echo '任意门优选 _ 微信公众号列表';
+				else if ($l_type=='wxcat') echo (!$cat_id>0) ? '微信公众号列表' : (!empty($wxno_srch) ? $cat_name.' _ '.$wxno_srch.' _ 公众号搜索结果' : $cat_name.' _ 公众号列表');
+				else echo (empty($wxno_srch)||($wxno_srch=='`')) ? '微信公众号列表' : ($cat_id>0 ? $wxno_srch.' _ '.$cat_name.' _ 公众号搜索结果' : $wxno_srch.' _ 公众号搜索结果');
+				?></h3>
+				<volist name="wxno_list" id="wxno_l" key="k">
+				<div class="history-grids wxno_list_div">
+					<div class="col-md-12 history-grid">
+						<a href="{$do_main}/wxart/{$wxno_l.wx_no}" title="{$wxno_l.wx_name}">
+						<div class="history-left">
+						<if condition="$wxno_l['wx_logo_thumb'] neq ''">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$wxno_l.art_pic}" onerror="javascript:this.src='<?php echo C('GET_FILE_PATH');?>wxno/{$wxno_l.wx_logo_thumb}'" />
+						<else />
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$wxno_l.art_pic}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_thumb.png'" />
+						</if>
+						</div>
+						</a>
+						<div class="history-right">
+							<h4><?php echo ($wxno_l['is_rec_pic']==1 ? '<b title="任意门特别推荐">[特]</b>' : '').($wxno_l['is_recommend']==1 ? '<b title="任意门推荐">[荐]</b>' : '').($wxno_l['is_good']==1 ? '<b title="任意门优选">[优]</b>' : '').($wxno_l['is_hot']==1 ? '<b title="热门公众号">[热]</b>' : '');?><a href="{$do_main}/wxart/{$wxno_l.wx_no}" title="{$wxno_l.wx_name}">{$wxno_l.wx_name}&nbsp;（{$wxno_l.wx_no}）</a></h4>
+							<p><a href="{$do_main}/wxart/{$wxno_l.wx_no}">{$wxno_l.wx_desc|subtext=45}</a></p>
+						</div>
+					</div>
+				</div>
+				<if condition="$k%2 eq 0">
+				<div class="clearfix"></div>
+				</if>
+				</volist>
+			</div>
+			<div class="clearfix"></div>
+			<div id="wxno_load">
+			<if condition="$row_count gt $page_size">
+			<a class="loading_more" id="loading_more_wxno" onclick="javascript:load_more_wxno('2','{$wxno_srch}','{$cat_id}','{$cat_name}','{$sel_type}','{$page_size}','{$row_count}')">加 载 更 多</a>
+			<else />
+			<a class="loading_more no_more">没 有 更 多 了</a>
+			</if>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	SearchHighlight('list_container','<?php echo $_REQUEST['wxno_srch'];?>');
+});
+</script>
+<!--content end-->
+<include file="./Public/footer.html" />

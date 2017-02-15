@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>管理员日志列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 权限管理 
+	<span class="c-gray en">&gt;</span> 管理员日志列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="frm_search">
+		<form action="{:U('Access/AdminLog/logList')}" method="post" id="frm_srch_log">
+			<select name="log_type" class="select" onchange="javascript:$('#frm_srch_log').submit();">
+				<option value="0" selected >日志类型</option>
+				<option value="2" <if condition="$_REQUEST['log_type'] eq '2'">selected</if>>行为日志</option>
+				<option value="1" <if condition="$_REQUEST['log_type'] eq '1'">selected</if>>登录日志</option>
+			</select>
+			记录日期：
+			<input type="text" onfocus="WdatePicker()" id="date_start" name="date_start" value="{$_REQUEST['date_start']}" class="input-text Wdate" />
+			-
+			<input type="text" onfocus="WdatePicker()" id="date_end" name="date_end" value="{$_REQUEST['date_end']}" class="input-text Wdate" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" name="srch_text" value="{$_REQUEST['srch_text']}" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入记录IP地址" name="srch_ip" value="{$_REQUEST['srch_ip']}" />
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜日志</button>&nbsp;
+			<a href="{:U('Access/AdminLog/logList')}" class="btn btn-danger radius">清除查询条件</a>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="r">共有数据：<strong>{$row_count}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">管理员日志列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="log_ids[]" value="" /></th>
+				<th width="">记录标识</th>
+				<th width="">日志类型</th>
+				<th width="">操作人员</th>
+				<th width="">行为函数</th>
+				<th width="">行为描述</th>
+				<th width="">记录IP</th>
+				<th width="">记录时间</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="log_list" id="lg" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$lg.id}" name="log_ids[]" /></td>
+				<td>{$lg.id}</td>
+				<td>
+				<if condition="$lg['log_type'] eq '2'">
+				<span class="label label-success radius">行为日志</span>
+				<else />
+				<span class="label radius">登录日志</span>
+				</if>
+				</td>
+				<td>{$lg.user_name}</td>
+				<td>{$lg.action}</td>
+				<td>{$lg.log_desc}</td>
+				<td>{$lg.ip}</td>
+				<td>{$lg.add_time}</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+</body>
+</html>

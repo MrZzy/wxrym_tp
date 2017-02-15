@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+
+<title>我的桌面 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<div class="pd-20">
+	<p class="f-20 text-success">您好，<font color="red"><?php echo session('admin.member_name').'(&nbsp;'.session('admin.grp_name').'&nbsp;)';?></font>，
+		欢迎登入{$cfg_back.back_title}</p>
+	<div class="login_tips">
+		<span>登录次数：<?php echo session('admin.login_count')+1;?></span>
+		<span>上次登录时间：<?php echo session('admin.last_login_time');?></span>
+		<span>上次登录IP：<?php echo session('admin.last_login_ip');?></span>
+		<span>本次登录IP：<if condition="GetIP() neq $_SESSION['admin']['last_login_ip']"><font color="red"><?php echo GetIP();?></font><else /><?php echo GetIP();?></if></span>
+		<if condition="GetIP() neq $_SESSION['admin']['last_login_ip']"><span><a href="javascript:;" onclick="layer_show('密码更改','/admin.php/Access/Index/selfChgPwd','600','300',false);">如有异常，请修改密码>></a></span></if>
+	</div>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+		<tr>
+			<th colspan="7" scope="col">信息统计</th>
+		</tr>
+		<tr class="text-c">
+			<th>统计</th>
+            <th>公众号收录 / 未上线</th>
+            <th>待审核公众号</th>
+            <th>未通过公众号</th>
+			<th>第三方管理员 / 未启用</th>
+			<th>文章发布 / 未上线</th>
+			<th>访问IP / 访问次数(PV)</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr class="text-c">
+			<td>总数</td>
+			<td>{:W('Home/welCountInfo',['wxno',''])} / <font color="red">{:W('Home/welCountInfo',['wxno','is_delete=1'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=0'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=-1'])}</font></td>
+			<td>{:W('Home/welCountInfo',['admin_member','group_id=2'])} / <font color="red">{:W('Home/welCountInfo',['admin_member','group_id=1 and is_delete=1'])}</font></td>
+			<td>{:W('Home/welCountInfo',['wxarticle',''])} / <font color="red">{:W('Home/welCountInfo',['wxarticle','is_delete=1'])}</font></td>
+			<td>{:W('Home/visitCount',['ip'])} / {:W('Home/visitCount',['pv'])}</td>
+		</tr>
+		<tr class="text-c">
+			<td>今日</td>
+			<td>{:W('Home/welCountInfo',['wxno','date(add_time)=curdate()'])} / <font color="red">{:W('Home/welCountInfo',['wxno','is_delete=1 and date(add_time)=curdate()'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=0 and date(add_time)=curdate()'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=-1 and date(add_time)=curdate()'])}</font></td>
+            <td>{:W('Home/welCountInfo',['admin_member','group_id=2 and date(add_time)=curdate()'])} / <font color="red">{:W('Home/welCountInfo',['admin_member','group_id=1 and is_delete=1 and date(add_time)=curdate()'])}</font></td>
+			<td>{:W('Home/welCountInfo',['wxarticle','date(add_time)=curdate()'])} / <font color="red">{:W('Home/welCountInfo',['wxarticle','is_delete=1 and date(add_time)=curdate()'])}</td>
+			<td>{:W('Home/visitCount',['ip','date(add_time)=curdate()'])} / {:W('Home/visitCount',['pv','date(add_time)=curdate()'])}</td>
+		</tr>
+		<tr class="text-c">
+			<td>昨日</td>
+            <td>{:W('Home/welCountInfo',['wxno','date(add_time) = date_sub(curdate(),interval 1 day)'])} / <font color="red">{:W('Home/welCountInfo',['wxno','is_delete=1 and date(add_time) = date_sub(curdate(),interval 1 day)'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=0 and date(add_time) = date_sub(curdate(),interval 1 day)'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=-1 and date(add_time) = date_sub(curdate(),interval 1 day)'])}</font></td>
+            <td>{:W('Home/welCountInfo',['admin_member','group_id=2 and date(add_time) = date_sub(curdate(),interval 1 day)'])} / <font color="red">{:W('Home/welCountInfo',['admin_member','group_id=1 and is_delete=1 and date(add_time) = date_sub(curdate(),interval 1 day)'])}</font></td>
+            <td>{:W('Home/welCountInfo',['wxarticle','date(add_time) = date_sub(curdate(),interval 1 day)'])} / <font color="red">{:W('Home/welCountInfo',['wxarticle','is_delete=1 and date(add_time) = date_sub(curdate(),interval 1 day)'])}</td>
+            <td>{:W('Home/visitCount',['ip','date(add_time) = date_sub(curdate(),interval 1 day)'])} / {:W('Home/visitCount',['pv','date(add_time) = date_sub(curdate(),interval 1 day)'])}</td>
+		</tr>
+		<tr class="text-c">
+			<td>本周</td>
+            <td>{:W('Home/welCountInfo',['wxno','YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])} / <font color="red">{:W('Home/welCountInfo',['wxno','is_delete=1 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=0 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=-1 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</font></td>
+            <td>{:W('Home/welCountInfo',['admin_member','group_id=2 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])} / <font color="red">{:W('Home/welCountInfo',['admin_member','group_id=1 and is_delete=1 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</font></td>
+            <td>{:W('Home/welCountInfo',['wxarticle','YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])} / <font color="red">{:W('Home/welCountInfo',['wxarticle','is_delete=1 and YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</td>
+            <td>{:W('Home/visitCount',['ip','YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])} / {:W('Home/visitCount',['pv','YEARWEEK(date_format(add_time,"%Y-%m-%d")) = YEARWEEK(now())'])}</td>
+		</tr>
+		<tr class="text-c">
+			<td>本月</td>
+            <td>{:W('Home/welCountInfo',['wxno','DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])} / <font color="red">{:W('Home/welCountInfo',['wxno','is_delete=1 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=0 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</font></td>
+            <td><font color="red">{:W('Home/welCountInfo',['wxno','is_checked=-1 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</font></td>
+            <td>{:W('Home/welCountInfo',['admin_member','group_id=2 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])} / <font color="red">{:W('Home/welCountInfo',['admin_member','group_id=1 and is_delete=1 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</font></td>
+            <td>{:W('Home/welCountInfo',['wxarticle','DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])} / <font color="red">{:W('Home/welCountInfo',['wxarticle','is_delete=1 and DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</td>
+            <td>{:W('Home/visitCount',['ip','DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])} / {:W('Home/visitCount',['pv','DATE_FORMAT(add_time,"%Y-%m")=DATE_FORMAT(now(),"%Y-%m")'])}</td>
+		</tr>
+		</tbody>
+	</table>
+	<table class="table table-border table-bordered table-bg mt-20">
+	<thead>
+		<tr>
+			<th colspan="2" scope="col">服务器信息</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td width="200">服务器类型</td>
+			<td><span id="lbServerName"><literal><?php echo php_uname('s');?></literal></span></td>
+		</tr>
+		<tr>
+			<td>服务器IP地址</td>
+			<td><literal><?php echo GetHostByName($_SERVER['SERVER_NAME']);?></literal></td>
+		</tr>
+		<tr>
+			<td>服务器域名</td>
+			<td><literal><?php echo $_SERVER["HTTP_HOST"];?></literal></td>
+		</tr>
+		<tr>
+			<td>服务器PHP版本</td>
+			<td><literal><?php echo "v".PHP_VERSION;?></literal></td>
+		</tr>
+		<tr>
+			<td>服务器环境</td>
+			<td><literal><?php echo $_SERVER['SERVER_SOFTWARE'];?></literal></td>
+		</tr>
+		<tr>
+			<td>服务器端口</td>
+			<td><literal><?php echo $_SERVER['SERVER_PORT'];?></literal></td>
+		</tr>
+	</tbody>
+	</table>
+</div>
+<footer class="footer">
+	<p>Copyright &copy;<?php echo date('Y',time());?> <?php echo htmlspecialchars_decode($cfg_back['web_company']);?> All Rights Reserved.</p>
+</footer>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+</script>
+</body>
+</html>

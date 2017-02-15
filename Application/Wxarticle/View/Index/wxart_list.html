@@ -1,0 +1,45 @@
+<include file="./Public/header.html" />
+<!--content start-->
+<div class="content">
+	<div class="history-section">
+		<div class="container" id="list_container">
+			<div id="wxart_container">
+				<h3><?php 
+				if ($sel_type=='hot') echo '热门文章 _ 公众号微文列表';
+				else if ($sel_type=='best') echo '任意门精选美文 _ 公众号微文列表';
+				else echo '公众号微文列表';
+				?></h3>
+				<volist name="wxart_list" id="art_l" key="k">
+				<div class="history-grids-allart art_list_div">
+					<div class="col-md-12 history-grid">
+						<a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>
+						<div class="history-left">
+						<if condition="$art_l['wx_logo_thumb'] neq ''">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('GET_FILE_PATH');?>wxno/{$art_l.wx_logo_thumb}'" />
+						<else />
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_thumb.png'" />
+						</if>
+						</div>
+						</a>
+						<div class="history-right">
+							<h4><?php echo ($art_l['is_best']=='1' ? '<font color="red" title="任意门精选美文">[优]</font>' : '').($art_l['is_hot']=='1' ? '<font color="red" title="热门文章">[热]</font>' : '');?><a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>{$art_l.art_title}&nbsp;[{$art_l.add_time|time_tran}]</a></h4>
+							<p><a href="{$do_main}/a/{$art_l.aid}">{$art_l.art_desc|subtext=120}</a></p>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				</volist>
+			</div>
+			<div class="clearfix"></div>
+			<div id="art_load">
+			<if condition="$row_count gt $page_size">
+			<a class="loading_more" id="loading_more_wxno" onclick="javascript:load_more_wxart('2','','{$page_size}','{$row_count}')">加 载 更 多</a>
+			<else />
+			<a class="loading_more no_more">没 有 更 多 了</a>
+			</if>
+			</div>
+		</div>
+	</div>
+</div>
+<!--content end-->
+<include file="./Public/footer.html" />

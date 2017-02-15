@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>我的公众号列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 我的公众号管理 
+	<span class="c-gray en">&gt;</span> 我的公众号列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="frm_search">
+		<form action="{:U('Mywx/Wxno/wxList')}" method="post" id="frm_srch_no">
+			添加日期：
+			<input type="text" onfocus="WdatePicker()" id="date_start" name="date_start" value="{$_REQUEST['date_start']}" class="input-text Wdate" />
+			-
+			<input type="text" onfocus="WdatePicker()" id="date_end" name="date_end" value="{$_REQUEST['date_end']}" class="input-text Wdate" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入公众号名称" name="wx_name" value="{$_REQUEST['wx_name']}" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入公众号ID" name="wx_no" value="{$_REQUEST['wx_no']}" />
+			<select name="cat_id" class="select" onchange="javascript:$('#frm_srch_no').submit();">
+				<option value="0">-- 公众号类型</option>
+				<volist name="catList" id="nt">
+				<option value="{$nt.cat_id}" <if condition="$_REQUEST['cat_id'] eq $nt['cat_id']">selected</if>>{$nt.cat_name}</option>
+				</volist>
+			</select>
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜公众号</button>&nbsp;
+			<a href="{:U('Mywx/Wxno/wxList')}" class="btn btn-danger radius">清除查询条件</a>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Mywx/Wxno/wxAdd')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 提交公众号
+			</a>
+		</span>
+		<span class="r">共有数据：<strong>{$row_count}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="14">微信公众号列表</th>
+			</tr>
+			<tr class="text-c">
+				<!-- <th width="2%"><input type="checkbox" name="no_ids[]" value="" /></th> -->
+				<th width="">公众号名称</th>
+				<th width="">公众号ID</th>
+				<th width="">分类名称</th>
+				<th width="">封面图</th>
+				<th width="">二维码<br />(点击查看大图)</th>
+				<th width="">简介</th>
+				<th width="">图片墙推荐</th>
+				<th width="">推荐</th>
+				<th width="">热门</th>
+				<th width="">优秀</th>
+				<th width="">添加时间</th>
+                <th width="">审核通过</th>
+				<th width="">是否上线</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="no_list" id="nl" key="k">
+			<tr class="text-c">
+				<!-- <td><input type="checkbox" value="{$nl.wx_id}" name="no_ids[]" /></td> -->
+				<td>{$nl.wx_name}</td>
+				<td>{$nl.wx_no}</td>
+				<td>[&nbsp;<font color="green">{$nl.cat_name}</font>&nbsp;]</td>
+				<td class="admin_pro_img">
+				<if condition="$nl['wx_logo_thumb'] neq ''">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_logo_thumb}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				<elseif condition="$nl['wx_logo'] neq ''" />
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_logo}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td class="admin_pro_img">
+				<if condition="$nl['wx_img_thumb'] neq ''">
+				<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" title="《{$nl.wx_name}》二维码" target="_blank" class="show_ewm">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img_thumb}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<elseif condition="$nl['wx_img'] neq ''" />
+				<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" title="《{$nl.wx_name}》二维码" target="_blank" class="show_ewm">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td><p style="display:block;max-width:400px;text-align:left;">{$nl.wx_desc|subtext=70}</p></td>
+				<td>
+				<if condition="$nl['is_rec_pic'] eq '1'">
+				<span class="label label-success radius">图片墙推荐</span>
+				<else />
+				<span class="label radius">普通</span>
+				</if>
+				</td>
+				<td>
+				<if condition="$nl['is_recommend'] eq '1'">
+				<span class="label label-success radius">推荐</span>
+				<else />
+				<span class="label radius">普通</span>
+				</if>
+				</td>
+				<td>
+				<if condition="$nl['is_hot'] eq '1'">
+				<span class="label label-success radius">热门</span>
+				<else />
+				<span class="label radius">普通</span>
+				</if>
+				</td>
+				<td>
+				<if condition="$nl['is_good'] eq '1'">
+				<span class="label label-success radius">优秀</span>
+				<else />
+				<span class="label radius">普通</span>
+				</if>
+				</td>
+				<td>{$nl.add_time}</td>
+                <td class="td-check_{$nl['wx_id']}">
+                    <if condition="$nl['is_checked'] eq '1'">
+                        <span class="label label-success radius">审核通过</span>
+                        <elseif condition="$nl['is_checked'] eq '-1'" />
+                        <span class="label label-red radius">审核不通过</span>
+                        <else />
+                        <span class="label radius">待审核</span>
+                    </if>
+                </td>
+				<td class="td-status">
+					<if condition="$nl['is_delete'] eq '1'">
+					<span class="label radius">已下架</span>
+					<else />
+					<span class="label label-success radius">上线</span>
+					</if>
+				</td>
+				<td class="td-manage">
+					<if condition="$nl['is_delete'] eq '1'">
+					<a onClick="wxno_stop(this,'{$nl['wx_id']}','{$nl['wx_name']}','start')" href="javascript:;" title="上线">[&nbsp;上线&nbsp;]</a><br /><br />
+					<else />
+					<a onClick="wxno_stop(this,'{$nl['wx_id']}','{$nl['wx_name']}','stop')" href="javascript:;" title="下架">[&nbsp;下架&nbsp;]</a><br /><br />
+					</if>
+					[&nbsp;<a title="信息编辑" href="{:U('Mywx/Wxno/wxAdd',array('wx_id'=>$nl['wx_id']))}">编辑</a>&nbsp;]
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script src="<?php echo C('FRONT_RES_PATH');?>js/jquery.chocolat.js"></script>
+<link rel="stylesheet" href="<?php echo C('FRONT_RES_PATH');?>css/chocolat.css" type="text/css" media="screen">
+<script type="text/javascript">
+$(function() {
+	$('.show_ewm').Chocolat();
+});
+</script>
+<style type="text/css">
+#Choco_close{
+	float:left;
+}
+#wx_name{
+	color: #fff !important;
+	font-size: larger;
+}
+</style>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+var iii;
+function wxno_stop(obj,wx_id,wx_name,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"wxno_stop(this,'"+wx_id+"','"+wx_name+"','"+met+"')\" href=\"javascript:;\" title=\"上线\">[&nbsp;上线&nbsp;]</a>";
+		layer.confirm('确定后将下线其下所有文章，确定要下架吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Mywx/Wxno/wxStop")}',
+				async: true,
+				data: {
+					"wx_id":wx_id,
+					"wx_name":wx_name,
+					"met":"stop"
+				},
+				dataType: "json",
+                beforeSend:function(XMLHttpRequest){
+                    $('.layui-layer-close').click();
+                    iii = layer.load(1, {
+                        skin: '',
+                        shade: [0.5, '#fff']
+                    });
+                },
+                complete:function(XMLHttpRequest,textStatus){
+                    layer.close(iii);
+                },
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已下架</span>");
+						$(obj).remove();
+						layer.msg('已下架，请刷新页面查看！',{icon:1,time:1000});
+					}else{
+                        if (js_msg.status == 0)
+                            layer.msg('没有权限！',{icon:9,time:3000});
+                        else
+						    layer.msg(js_msg.msg,{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"wxno_stop(this,'"+wx_id+"','"+wx_name+"','"+met+"')\" href=\"javascript:;\" title=\"下架\">[&nbsp;下架&nbsp;]</a>";
+		layer.confirm('确定后将上线其下所有文章，确定要上线吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Mywx/Wxno/wxStop")}',
+				async: true,
+				data: {
+					"wx_id":wx_id,
+					"wx_name":wx_name,
+					"met":"start"
+				},
+				dataType: "json",
+                beforeSend:function(XMLHttpRequest){
+                    $('.layui-layer-close').click();
+                    iii = layer.load(1, {
+                        skin: '',
+                        shade: [0.5, '#fff']
+                    });
+                },
+                complete:function(XMLHttpRequest,textStatus){
+                    layer.close(iii);
+                },
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">上线</span>');
+						$(obj).remove();
+						layer.msg('已上线，请刷新页面查看！', {icon:1,time:1000});
+					}else{
+                        if (js_msg.status == 0)
+                            layer.msg('没有权限！',{icon:9,time:3000});
+                        else
+						    layer.msg(js_msg.msg,{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

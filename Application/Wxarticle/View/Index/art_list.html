@@ -1,0 +1,79 @@
+<include file="./Public/header.html" />
+<!--content start-->
+<div class="content">
+	<div class="about-section">
+		<div class="container">
+			<h2>{$wxnoInfo.wx_name}</h2>
+			<div class="about-grids">
+				<div class="col-md-2 about-grid">
+					<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$wxnoInfo.wx_logo}" class="img-responsive" alt="{$wxnoInfo.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+				</div>
+				<div class="col-md-6 about-grid1">
+					<h4>{$wxnoInfo.wx_name}[{$wxnoInfo.wx_no}] _ 公众号详情</h4>
+					<p class="wxrym_promote"><?php echo ($wxnoInfo['is_rec_pic'] ? '<b title="任意门特别推荐">[ 任意门特荐 ]</b>' : '').($wxnoInfo['is_recommend'] ? '<b title="任意门推荐账号">[ 任意门推荐 ]</b>' : '').($wxnoInfo['is_good'] ? '<b title="任意门优选">[ 任意门优选 ]</b>' : '').($wxnoInfo['is_hot'] ? '<b title="热门公众号">[ 热门公众号 ]</b>' : '');?></p>
+					<div class="about-bottom">
+						<div class="col-md-12 about-bottomgrid">
+							<p><b>扫描二维码或搜索"{$wxnoInfo.wx_no}"关注《{$wxnoInfo.wx_name}》</b></p>
+							<p>{$wxnoInfo.wx_desc}</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="col-md-4 about-grid1">
+					<div class="col-md-12 about-bottomgrid1">
+					<if condition="$wxnoInfo['wx_img'] neq ''">
+					<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$wxnoInfo.wx_img}" title="查看《{$wxnoInfo.wx_name}》二维码" target="_blank" id="show_ewm">
+					<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$wxnoInfo.wx_img}" class="img-responsive" alt="{$wxnoInfo.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+					</a>
+					<else />
+					<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$wxnoInfo.wx_img}" class="img-responsive" alt="{$wxnoInfo.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+					</if>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	<div class="history-section">
+		<div class="container" id="list_container">
+			<div id="wxart_container">
+				<h3>公众号微文列表</h3>
+				<volist name="wxart_list" id="art_l" key="k">
+				<div class="history-grids-allart art_list_div">
+					<div class="col-md-12 history-grid">
+						<a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>
+						<div class="history-left">
+							<if condition="$art_l['wx_logo_thumb'] neq ''">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('GET_FILE_PATH');?>wxno/{$art_l.wx_logo_thumb}'" />
+							<else />
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_thumb.png'" />
+							</if>
+						</div>
+						</a>
+						<div class="history-right">
+							<h4><?php echo ($art_l['is_best']=='1' ? '<font color="red">[优]</font>' : '').($art_l['is_hot']=='1' ? '<font color="red">[热]</font>' : '');?><a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>{$art_l.art_title}&nbsp;[{$art_l.add_time|time_tran}]</a></h4>
+							<p><a href="{$do_main}/a/{$art_l.aid}">{$art_l.art_desc|subtext=120}</a></p>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				</volist>
+			</div>
+			<div class="clearfix"></div>
+			<div id="art_load">
+			<if condition="$row_count gt $page_size">
+			<a class="loading_more" id="loading_more_wxno" onclick="javascript:load_more_wxart('2','{$wx_no}','{$page_size}','{$row_count}')">加 载 更 多</a>
+			<else />
+			<a class="loading_more no_more">没 有 更 多 了</a>
+			</if>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function() {
+	$('#show_ewm').Chocolat();
+});
+</script>
+<!--content end-->
+<include file="./Public/footer.html" />

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<script type="text/javascript">alert('为获得更好的视觉体验，请使用IE9以上的浏览器打开，火狐、谷歌浏览器均可，360浏览器请选择极速模式！');</script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<input type="hidden" id="skin_path" value="<?php echo C('BACK_RES_PATH');?>" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/skin/default/skin.css" rel="stylesheet" type="text/css" id="skin" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<title>后台管理 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<header class="Hui-header cl">
+	<a class="Hui-logo l" title="{$cfg_back.back_title}" href="/admin.php">{$cfg_back.back_title}</a>
+	<nav class="mainnav cl" id="Hui-nav">
+		<ul>
+			<li class="dropDown dropDown_click" style="margin-left:30px;"><i class="Hui-iconfont">&#xe690;</i> <span id="time_normal"></span>&nbsp;<span id="time_lunar"></span> </li>
+		</ul>
+	</nav>
+	<ul class="Hui-userbar">
+		<li>[&nbsp;<?php echo session('admin.grp_name');?>&nbsp;]&nbsp;</li>
+		<li><a href="/" target="_blank">网站首页</a></li>
+		<if condition="$unabled_c_cache neq '1'"><li style="margin:0px 5px;"><a class="clearCache" href="javascript:;" onclick="clear_cache()">清除网站缓存</a></li></if>
+		<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><?php echo session('admin.member_name');?> <i class="Hui-iconfont">&#xe6d5;</i></a>
+			<ul class="dropDown-menu radius box-shadow">
+				<li><a href="javascript:;" onclick="layer_show('密码更改','/admin.php/Access/Index/selfChgPwd','600','300',false);">修改密码</a></li>
+				<li><a href="{:U('Home/Index/logout')}">切换账户</a></li>
+				<li><a href="{:U('Home/Index/logout')}">退出</a></li>
+			</ul>
+		</li>
+		<li id="Hui-skin" class="dropDown right dropDown_hover"><a href="javascript:;" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
+			<ul class="dropDown-menu radius box-shadow">
+				<li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
+				<li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>
+				<li><a href="javascript:;" data-val="green" title="绿色">绿色</a></li>
+				<li><a href="javascript:;" data-val="red" title="红色">红色</a></li>
+				<li><a href="javascript:;" data-val="yellow" title="黄色">黄色</a></li>
+				<li><a href="javascript:;" data-val="orange" title="绿色">橙色</a></li>
+			</ul>
+		</li>
+	</ul>
+	<a aria-hidden="false" class="Hui-nav-toggle" href="#"></a>
+</header>
+<aside class="Hui-aside" id="menu_nav">
+	<input runat="server" id="divScrollValue" type="hidden" value="" />
+	<div class="menu_dropdown bk_2">
+		<volist name="menu_parent" id="m_p">
+		<dl id="menu-article">
+			<dt><i class="Hui-iconfont">&#xe681;</i> {$m_p.menu_name}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<volist name="menu_child" id="m_c">
+						<if condition="$m_c['parent_id'] eq $m_p['menu_id']">
+						<li><a _href="{$m_c.url}" href="javascript:void(0)">{$m_c.menu_name}</a></li>
+						</if>
+					</volist>
+				</ul>
+			</dd>
+		</dl>
+		</volist>
+	</div>
+</aside>
+<div class="dislpayArrow"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>
+<section class="Hui-article-box">
+	<div id="Hui-tabNav" class="Hui-tabNav">
+		<div class="Hui-tabNav-wp">
+			<ul id="min_title_list" class="acrossTab cl">
+				<li class="active"><span title="我的桌面" data-href="welcome.html"> 我的桌面</span><em></em></li>
+			</ul>
+		</div>
+		<div class="Hui-tabNav-more btn-group"><a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a><a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a></div>
+	</div>
+	<div id="iframe_box" class="Hui-article">
+		<div class="show_iframe">
+			<div style="display:none" class="loading"></div>
+			<iframe scrolling="yes" frameborder="0" src="{:U('Home/Index/welcome')}"></iframe>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>js/getCalendar.js"></script>
+
+<script type="text/javascript">
+setTime();
+showCal();
+$(window).scroll(function (){
+	$backToTopFun();
+});
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+
+function iframe_full(title,url){
+	var iframe = layer.open({
+		type: 2,
+		title: title,
+		//maxmin: true,
+		content: url
+	});
+	layer.full(iframe);
+}
+<?php
+if ($unabled_c_cache != '1'){
+?>
+function clear_cache(){
+	$.ajax({
+		type: "POST",
+		url: '{:U("Config/Index/clearCache")}',
+		async: false,
+		data: "c_cache=1",
+		//dataType: "text",
+		success:function(msg){
+			layer.msg('网站缓存清除成功，请刷新前后台页面查看！',{icon:1,time:1000});
+		},
+		error:function(msg){
+			layer.msg('缓存清除失败，请稍后重试！',{icon:9,time:3000});
+		}
+	});
+}
+<?php
+}
+?>
+</script>
+</body>
+</html>

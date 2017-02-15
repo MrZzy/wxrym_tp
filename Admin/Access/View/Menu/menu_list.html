@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>后台权限列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 权限管理 
+	<span class="c-gray en">&gt;</span> 后台权限菜单列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Access/menu/meEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加菜单
+			</a>
+		</span>
+		<span class="r">共有数据：<strong><?php echo count($menu_parent) + count($menu_child);?></strong> 条</span>
+	</div>
+	<volist name="menu_parent" id="m_parent" key="k">
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr class="text-c tr_parent">
+				<th scope="col"><b>{$m_parent.menu_name}</b></th>
+				<th>{$m_parent.menu_id}</th>
+				<th>{$m_parent.order_num}</th>
+				<th>{$m_parent.menu_name}</th>
+				<th><font color="gray">无</font></th>
+				<th>{$m_parent.action}</th>
+				<th>{$m_parent.url}</th>
+				<th>
+					<if condition="$m_parent['is_menu'] eq '1'">
+					<span class="label label-success radius">菜单</span>
+					<else />
+					<span class="label radius">权限</span>
+					</if>
+				</th>
+				<th class="td-status">
+					<if condition="$m_parent['is_delete'] eq '1' and $m_parent['is_menu'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</th>
+				<th class="td-manage">
+					<if condition="$unabled_stop neq '1'">
+						<if condition="$m_parent['is_delete'] eq '1' and $m_parent['is_menu'] eq '1'">
+						<a onClick="menu_stop(this,'{$m_parent['menu_id']}','{$m_parent['menu_name']}','start')" href="javascript:;" title="启用">
+							<i class="Hui-iconfont">&#xe615;</i>
+						</a>
+						<else />
+						<a onClick="menu_stop(this,'{$m_parent['menu_id']}','{$m_parent['menu_name']}','stop')" href="javascript:;" title="禁用">
+							<i class="Hui-iconfont">&#xe631;</i>
+						</a>
+						</if>
+					</if>
+						<a title="信息编辑" href="{:U('Access/Menu/meEdit',array('meid'=>$m_parent['menu_id']))}" class="ml-5">
+							<i class="Hui-iconfont">&#xe6df;</i>
+						</a>
+				</th>
+			</tr>
+			<tr class="text-c">
+				<th width="" scope="col"><input type="checkbox" name="me_ids[]" value="" /></th>
+				<th width="">标识</th>
+				<th width="">排序</th>
+				<th width="">菜单(权限)名称</th>
+				<th width="">所属父级</th>
+				<th width="">操作函数</th>
+				<th width="">页面URL</th>
+				<th width="">菜单or权限</th>
+				<th width="">是否启用</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="menu_child" id="m_child" key="j">
+				<if condition="$m_child['parent_id'] eq $m_parent['menu_id']">
+				<tr class="text-c">
+					<td><input type="checkbox" value="{$m_child.menu_id}" name="me_ids[]" /></td>
+					<td>{$m_child.menu_id}</td>
+					<td>{$m_child.order_num}</td>
+					<td>{$m_child.menu_name}</td>
+					<td>{$m_parent.menu_name}</td>
+					<td>{$m_child.action}</td>
+					<td>{$m_child.url}</td>
+					<td>
+						<if condition="$m_child['is_menu'] eq '1'">
+						<span class="label label-success radius">菜单</span>
+						<else />
+						<span class="label radius">权限</span>
+						</if>
+					</td>
+					<td class="td-status">
+						<if condition="$m_child['is_delete'] eq '1'">
+						<span class="label radius">已禁用</span>
+						<else />
+						<span class="label label-success radius">已启用</span>
+						</if>
+					</td>
+					<td class="td-manage">
+					<if condition="$unabled_stop neq '1' and $m_child['is_menu'] eq '1'">
+						<if condition="$m_child['is_delete'] eq '1'">
+						<a onClick="menu_stop(this,'{$m_child['menu_id']}','{$m_child['menu_name']}','start')" href="javascript:;" title="启用">
+							<i class="Hui-iconfont">&#xe615;</i>
+						</a>
+						<else />
+						<a onClick="menu_stop(this,'{$m_child['menu_id']}','{$m_child['menu_name']}','stop')" href="javascript:;" title="禁用">
+							<i class="Hui-iconfont">&#xe631;</i>
+						</a>
+						</if>
+					</if>
+						<a title="信息编辑" href="{:U('Access/Menu/meEdit',array('meid'=>$m_child['menu_id']))}" class="ml-5">
+							<i class="Hui-iconfont">&#xe6df;</i>
+						</a>
+					<if condition="$unabled_del neq '1'">
+						<a title="删除" href="javascript:;" onclick="menu_del(this,'{$m_child['menu_id']}','{$m_child['menu_name']}')" class="ml-5" style="text-decoration:none">
+							<i class="Hui-iconfont">&#xe6e2;</i>
+						</a>
+					</if>
+					</td>
+				</tr>
+				</if>
+			</volist>
+		</tbody>
+	</table>
+	</volist>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function menu_stop(obj,meid,mename,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"menu_stop(this,'"+meid+"','"+mename+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/Menu/meStop")}',
+				async: false,
+				data: "meid="+meid+"&mename="+mename+"&met=stop",
+				//dataType: "text",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+					$(obj).remove();
+					layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('禁用权限菜单失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"menu_stop(this,'"+meid+"','"+mename+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/Menu/meStop")}',
+				async: false,
+				data: "meid="+meid+"&mename="+mename+"&met=start",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('启用权限菜单失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+function menu_del(obj,meid,mename){
+	layer.confirm('确定要删除吗？',{icon:0},function(){
+		$.ajax({
+			type: "POST",
+			url: '{:U("Access/Menu/meDel")}',
+			async: false,
+			data: "meid="+meid+"&mename="+mename,
+			success:function(msg){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+			},
+			error:function(msg){
+				layer.msg('删除权限菜单失败，请稍后重试！',{icon:9,time:3000});
+			}
+		});
+	});
+}
+</script>
+</body>
+</html>

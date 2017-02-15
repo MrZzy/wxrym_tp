@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>站点导航信息列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 站点管理 
+	<span class="c-gray en">&gt;</span> 站点导航列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Config/Menu/meEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加导航
+			</a>
+		</span>
+		<span class="r">共有数据：<strong><?php echo count($menuList);?></strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">站点导航列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="me_ids[]" value="" /></th>
+				<th width="">导航名称</th>
+				<th width="">导航标识名</th>
+				<th width="">上级菜单</th>
+				<th width="">链接地址</th>
+				<th width="">位置</th>
+				<th width="">排序</th>
+				<th width="">打开页面</th>
+				<th width="">状态</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="menuList" id="me" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$me.id}" name="me_ids[]" /></td>
+				<td>{$me.menu_name}</td>
+				<td>{$me.menu_tag}</td>
+				<td>{:W('Config/menuParent',array('mid'=>$me['parent_id']))}</td>
+				<td>{$me.menu_url}</td>
+				<td>
+					<if condition="$me['m_type'] eq '1'">
+					<span class="label label-success radius">顶部</span>
+					<else />
+					<span class="label radius">底部</span>
+					</if>
+				</td>
+				<td>{$me.m_order}</td>
+				<td>
+					<if condition="$me['open_met'] eq 'self'">
+					<span class="label label-success radius">当前窗口</span>
+					<else />
+					<span class="label radius">新建窗口</span>
+					</if>
+				</td>
+				<td class="td-status">
+					<if condition="$me['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1'">
+					<if condition="$me['is_delete'] eq '1'">
+					<a onClick="menu_stop(this,'{$me['id']}','{$me['menu_name']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="menu_stop(this,'{$me['id']}','{$me['menu_name']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="{:U('Config/Menu/meEdit',array('meid'=>$me['id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function menu_stop(obj,meid,mename,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"menu_stop(this,'"+meid+"','"+mename+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Config/Menu/meStop")}',
+				async: false,
+				data: "meid="+meid+"&mename="+mename+"&met=stop",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+					$(obj).remove();
+					layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('禁用导航信息失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"menu_stop(this,'"+meid+"','"+mename+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Config/Menu/meStop")}',
+				async: false,
+				data: "meid="+meid+"&mename="+mename+"&met=start",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('启用导航信息失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

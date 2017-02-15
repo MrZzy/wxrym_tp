@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+<title>管理员权限详情页 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 权限管理 
+	<span class="c-gray en">&gt;</span> 管理员列表 
+	<span class="c-gray en">&gt;</span> 管理员权限信息更改 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="{:U('Access/Index/mList')}" title="返回列表页" >
+		<i class="Hui-iconfont">&#xe66b;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<form action="{:U('Access/Index/mAccess')}" method="post" class="form form-horizontal" id="frm_admin_save">
+		<input type="hidden" name="mid" id="mid" value="{$member_info.id}" />
+		<input type="hidden" name="mname" id="mname" value="{$member_info.member_name}" />
+		<div class="row cl">
+			<label class="form-label col-3">管理员名称：</label>
+			<div class="formControls col-4">
+				<input type="text" class="input-text cur_disabled" id="member_name" name="member_name" value="{$member_info.member_name}" disabled />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">所属群组：</label>
+			<div class="formControls col-4">
+				<input type="text" class="input-text cur_disabled" id="grp_name" name="grp_name" value="{$member_info.grp_name}" disabled />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">管理员权限：</label>
+			<div class="formControls col-7">
+				<volist name="grp_access_parent" id="parent_m" key="k">
+				<dl class="access_list">
+					<dt>
+						<label class="access_list_dt {$parent_m.is_checked}">
+							<input type="checkbox" class="access_input_dt" id="check_{$k}" name="admin_access[]" value="{$parent_m.menu_id}" {$parent_m.is_checked} />{$parent_m.menu_name}
+							<div class="check_div_parent"></div>
+						</label>
+					</dt>
+					<dd>
+						<dl class="cl access_list2">
+							<dd>
+							<volist name="grp_access_child" id="child_m">
+								<if condition="$child_m['parent_id'] eq $parent_m['menu_id']">
+								<label class="access_list_dd {$child_m.is_checked}">
+									<input type="checkbox" class="access_input_dd" name="admin_access[]" value="{$child_m.menu_id}" {$child_m.is_checked} />{$child_m.menu_name}
+									<div class="check_div_child"></div>
+								</label>
+								</if>
+							</volist>
+							<div class="clearfix"></div>
+							</dd>
+						</dl>
+					</dd>
+				</dl>
+				</volist>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;提&nbsp;交&nbsp;" />&nbsp;&nbsp;
+				<a href="{:U('Access/Index/mList')}" class="btn btn-default radius">取消</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$.Huihover('.access_list_dt');
+	$.Huihover('.access_list_dd');
+	$(".access_list_dt").click(function(){
+		if ($(this).find('.access_input_dt').prop('checked')){
+			$(this).find('.access_input_dt').prop('checked',true);
+			$(this).find('.access_input_dt').attr('checked',true);
+			$(this).addClass('checked');
+			$(this).closest("dl").find("dd label.access_list_dd").addClass('checked');
+		}else{
+			$(this).parent().find('.access_input_dt').prop('checked',false);
+			$(this).parent().find('.access_input_dt').attr('checked',false);
+			$(this).removeClass('checked');
+			$(this).closest("dl").find("dd label.access_list_dd").removeClass('checked');
+		}
+		$(this).closest("dl").find("dd input:checkbox").prop('checked',$(this).parent().find('.access_input_dt').prop('checked'));
+		$(this).closest("dl").find("dd input:checkbox").attr('checked',$(this).parent().find('.access_input_dt').prop('checked'));
+	});
+	$(".access_list_dd").click(function(){
+		if($(this).find('.access_input_dd').prop("checked")){
+			$(this).find('.access_input_dd').prop('checked',true);
+			$(this).find('.access_input_dd').attr('checked',true);
+			$(this).addClass('checked');
+		}else{
+			$(this).find('.access_input_dd').prop('checked',false);
+			$(this).find('.access_input_dd').attr('checked',false);
+			$(this).removeClass('checked');
+		}
+	});
+});
+</script>
+</body>
+</html>

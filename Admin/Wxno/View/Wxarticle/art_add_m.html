@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('FRONT_RES_PATH');?>css/article_improve.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+
+<title>微信公众号文章批量添加 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 公众号管理 
+	<span class="c-gray en">&gt;</span> 微信公众号文章列表 
+	<span class="c-gray en">&gt;</span> 微信公众号文章批量添加 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px;font-size:14px !important;" href="javascript:location.replace(location.href);" title="刷新">
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px;font-size:14px !important;" href="{:U('Wxno/Wxarticle/artList')}" title="返回列表页">
+		<i class="Hui-iconfont">&#xe66b;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<form action="{:U('Wxno/Wxarticle/artAddM')}" method="post" class="form form-horizontal" id="frm_art_save" enctype="multipart/form-data" style="display:block !important;">
+		<input type="hidden" name="save" value="1" />
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>请确保内容格式正确：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text cur_disabled" readonly style="color:red;" value="链接1|链接2|···   -- 多个链接以'|'隔开" />
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>所属公众号：</label>
+			<div class="formControls col-6">
+				<span class="select-box">
+					<select class="select" name="wx_id" size="1" style="width:100%;">
+						<volist name="wxnoList" id="nList">
+						<option value="{$nList.wx_id}" <if condition="$artInfo['wx_id'] eq $nList['wx_id']">selected</if>>{$nList.wx_name}</option>
+						</volist>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>内容格式：</label>
+			<div class="formControls col-6">
+				<textarea name="artAddM" cols="" rows="" class="textarea" placeholder="原文链接1|原文链接2|···" style="resize: vertical;min-height: 500px;" datatype="*" nullmsg="添加内容格式错误"></textarea>
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<input class="btn btn-default radius" type="reset" value="&nbsp;&nbsp;重新填写&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<a class="btn btn-default radius" href="{:U('Wxno/Wxarticle/artList')}" title="返回列表页">取消</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#frm_art_save").Validform({
+		tiptype:2,
+	});
+	
+	var ue = UE.getEditor('editor',{
+		//initialFrameWidth :800,//设置编辑器宽度
+		initialFrameHeight:600,//设置编辑器高度
+		scaleEnabled:false
+	});
+});
+function show_preview(){
+	
+}
+</script>
+</body>
+</html>

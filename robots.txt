@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /Common/
+Disallow: /sqldata/
+Disallow: /ThinkPHP/
+Disallow: *.php
+
+Sitemap: http://www.wxrym.cn/sitemap.xml

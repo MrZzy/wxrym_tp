@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>微信公众号列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 公众号管理 
+	<span class="c-gray en">&gt;</span> 微信公众号列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="frm_search">
+		<form action="{:U('Wxno/Index/wxnoList')}" method="post" id="frm_srch_no">
+			添加日期：
+			<input type="text" onfocus="WdatePicker()" id="date_start" name="date_start" value="{$_REQUEST['date_start']}" class="input-text Wdate" />
+			-
+			<input type="text" onfocus="WdatePicker()" id="date_end" name="date_end" value="{$_REQUEST['date_end']}" class="input-text Wdate" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入公众号名称" name="wx_name" value="{$_REQUEST['wx_name']}" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入公众号ID" name="wx_no" value="{$_REQUEST['wx_no']}" />
+			<select name="cat_id" class="select" onchange="javascript:$('#frm_srch_no').submit();">
+				<option value="0">-- 公众号类型</option>
+				<volist name="catList" id="nt">
+				<option value="{$nt.cat_id}" <if condition="$_REQUEST['cat_id'] eq $nt['cat_id']">selected</if>>{$nt.cat_name}</option>
+				</volist>
+			</select>
+			<select name="sel_order" class="select" onchange="javascript:$('#frm_srch_no').submit();">
+				<option value="0">时间倒序</option>
+				<option value="1" <if condition="$_REQUEST['sel_order'] eq '1'">selected</if>>时间顺序</option>
+				<option value="2" <if condition="$_REQUEST['sel_order'] eq '2'">selected</if>>待审核</option>
+				<option value="3" <if condition="$_REQUEST['sel_order'] eq '3'">selected</if>>图片墙推荐</option>
+				<option value="4" <if condition="$_REQUEST['sel_order'] eq '4'">selected</if>>推荐</option>
+				<option value="5" <if condition="$_REQUEST['sel_order'] eq '5'">selected</if>>优秀</option>
+				<option value="6" <if condition="$_REQUEST['sel_order'] eq '6'">selected</if>>热门</option>
+			</select>
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜公众号</button>&nbsp;
+			<a href="{:U('Wxno/Index/wxnoList')}" class="btn btn-danger radius">清除查询条件</a>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Wxno/Index/wxnoEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加公众号
+			</a>
+		</span>
+		<span class="r">共有数据：<strong>{$row_count}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="14">微信公众号列表 -- <点击特殊属性即可更改></th>
+			</tr>
+			<tr class="text-c">
+				<!-- <th width="2%"><input type="checkbox" name="" value="" /></th> -->
+				<th width="">公众号名称</th>
+				<th width="">公众号ID</th>
+				<th width="">分类名称</th>
+				<th width="">封面图</th>
+				<th width="">二维码<br />(点击查看大图)</th>
+				<th width="">简介</th>
+				<th width="">图片墙推荐</th>
+				<th width="">推荐</th>
+				<th width="">热门</th>
+				<th width="">优秀</th>
+				<th width="">添加时间</th>
+				<th width="">审核通过</th>
+				<th width="">是否启用</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="no_list" id="nl" key="k">
+			<tr class="text-c">
+				<!-- <td><input type="checkbox" value="{$nl.wx_id}" name="no_ids[]" /></td> -->
+				<td>{$nl.wx_name}</td>
+				<td>{$nl.wx_no}</td>
+				<td>[&nbsp;<font color="green">{$nl.cat_name}</font>&nbsp;]</td>
+				<td class="admin_pro_img">
+				<if condition="$nl['wx_logo_thumb'] neq ''">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_logo_thumb}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				<elseif condition="$nl['wx_logo'] neq ''" />
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_logo}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td class="admin_pro_img">
+				<if condition="$nl['wx_img_thumb'] neq ''">
+				<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" title="《{$nl.wx_name}》二维码" target="_blank" class="show_ewm">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img_thumb}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<elseif condition="$nl['wx_img'] neq ''" />
+				<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" title="《{$nl.wx_name}》二维码" target="_blank" class="show_ewm">
+				<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$nl.wx_img}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td><p style="display:block;max-width:400px;text-align:left;">{$nl.wx_desc|subtext=70}</p></td>
+				<td class="td-recpic">
+				<if condition="$nl['is_rec_pic'] eq '1'">
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','not_rec_pic','{$nl['wx_name']}')" title="撤销图片墙推荐"><span class="label label-success radius">图片墙推荐</span></a>
+				<else />
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','rec_pic','{$nl['wx_name']}')" title="设置图片墙推荐"><span class="label radius">普通</span></a>
+				</if>
+				</td>
+				<td class="td-recommend">
+				<if condition="$nl['is_recommend'] eq '1'">
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','not_rec','{$nl['wx_name']}')" title="撤销推荐"><span class="label label-success radius">推荐</span></a>
+				<else />
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','rec','{$nl['wx_name']}')" title="设置推荐"><span class="label radius">普通</span></a>
+				</if>
+				</td>
+				<td class="td-hot">
+				<if condition="$nl['is_hot'] eq '1'">
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','not_hot','{$nl['wx_name']}')" title="撤销热门"><span class="label label-success radius">热门</span></a>
+				<else />
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','hot','{$nl['wx_name']}')" title="设置热门"><span class="label radius">普通</span></a>
+				</if>
+				</td>
+				<td class="td-good">
+				<if condition="$nl['is_good'] eq '1'">
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','not_good','{$nl['wx_name']}')" title="撤销优秀"><span class="label label-success radius">优秀</span></a>
+				<else />
+				<a onclick="upd_attr(this,'{$nl['wx_id']}','good','{$nl['wx_name']}')" title="设置优秀"><span class="label radius">普通</span></a>
+				</if>
+				</td>
+				<td>{$nl.add_time}</td>
+				<td class="td-check_{$nl['wx_id']}">
+					<if condition="$nl['is_checked'] eq '1'">
+					<span class="label label-success radius">审核通过</span>
+					<elseif condition="$nl['is_checked'] eq '-1'" />
+					<a onclick="check_wxno(this,'{$nl['wx_id']}','{$nl['wx_name']}','check_pass')" title="审核通过"><span class="label label-red radius">审核不通过</span></a>
+					<else />
+					<a onclick="show_dialog('{$nl['wx_id']}')" title="审核操作"><span class="label radius">待审核</span></a>
+					</if>
+				</td>
+				<td class="td-status">
+					<if condition="$nl['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1'">
+					<if condition="$nl['is_delete'] eq '1'">
+					<a onClick="wxno_stop(this,'{$nl['wx_id']}','{$nl['wx_name']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="wxno_stop(this,'{$nl['wx_id']}','{$nl['wx_name']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="{:U('Wxno/Index/wxnoEdit',array('wx_id'=>$nl['wx_id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_del neq '1'">
+					<a title="删除" href="javascript:;" onclick="wxno_stop(this,'{$nl['wx_id']}','{$nl['wx_name']}','del')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				<div class="cfrm_check" id="cfrm_check_{$nl['wx_id']}">
+					<a class="do_pass" onclick="check_wxno('.td-check_{$nl['wx_id']}','{$nl['wx_id']}','{$nl['wx_name']}','check_pass')">通过</a>
+					<a class="not_pass" onclick="check_wxno('.td-check_{$nl['wx_id']}','{$nl['wx_id']}','{$nl['wx_name']}','not_pass')">不通过</a>
+				</div>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script src="<?php echo C('FRONT_RES_PATH');?>js/jquery.chocolat.js"></script>
+<link rel="stylesheet" href="<?php echo C('FRONT_RES_PATH');?>css/chocolat.css" type="text/css" media="screen">
+<script type="text/javascript">
+$(function() {
+	$('.show_ewm').Chocolat();
+});
+</script>
+<style type="text/css">
+#Choco_close{
+	float:left;
+}
+#wx_name{
+	color: #fff !important;
+	font-size: larger;
+}
+</style>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+var iii;
+function show_dialog(wx_id){
+	layer.open({
+	  	type: 1,
+	  	shade: 0.5,
+	  	closeBtn: true,
+	  	skin: 'layer-ext-espresso',
+	  	title: '请确认审核操作', //不显示标题
+	  	content: $('#cfrm_check_'+wx_id), //捕获的元素
+	});
+}
+function check_wxno(obj,wx_id,wx_name,met){
+	var newHtml = '';
+	if (met=='check_pass'){
+		layer.confirm('确定审核通过吗？',{icon:0},function(){
+			newHtml = "<span class=\"label label-success radius\">审核通过</span>";
+			check_res(obj,wx_id,wx_name,"is_checked:1","审核通过",newHtml);
+		});
+	}else if (met=='not_pass'){
+		layer.confirm('确定不通过吗？',{icon:0},function(){
+			newHtml = "<a onclick=\"check_wxno(this,'"+wx_id+"','"+wx_name+"','check_pass')\" title=\"审核通过\"><span class=\"label label-red radius\">审核不通过</font></span></a>";
+		  	check_res(obj,wx_id,wx_name,"is_checked:-1","审核不通过",newHtml);
+		});
+	}else{
+		layer.alert('参数错误！',{icon:11});
+		return ;
+	}
+}
+function check_res(obj,wx_id,wx_name,send_data,data_desc,newHtml){
+	$.ajax({
+		type: "POST",
+		url: '{:U("Wxno/Index/wxnoCheck")}',
+		async: true,
+		data: {
+			"wx_id":wx_id,
+			"wx_name":wx_name,
+			"send_data":send_data,
+			"data_desc":data_desc,
+		},
+		dataType: "json",
+		beforeSend:function(XMLHttpRequest){
+	      	$('.layui-layer-close').click();
+	      	iii = layer.load(1, {
+	      		skin: '',
+		    	shade: [0.5, '#fff']
+		  	});
+	 	},
+		complete:function(XMLHttpRequest,textStatus){
+	     	layer.close(iii);
+	   	},
+		success:function(js_msg){
+			if (js_msg.code==1){
+				$(obj).html(newHtml);
+				layer.msg('操作完成，请刷新页面查看！',{icon:1,time:1000});
+			}else{
+				if (js_msg.status == 0)
+					layer.msg('没有权限！',{icon:9,time:3000});
+				else
+					layer.msg('操作失败，请稍后重试！',{icon:9,time:3000});
+			}
+		},
+		error:function(msg){
+			layer.msg('系统异常！',{icon:9,time:3000});
+		}
+	});
+}
+function upd_attr(obj,wx_id,met,wx_name){
+	var attr = '';
+	var newHtml = '';
+	var send_data = '';
+	var data_desc = '';
+	switch (met){
+		case 'rec_pic':
+			attr = 'recpic';
+			send_data = 'is_rec_pic:1';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','not_rec_pic','"+wx_name+"')\" title=\"撤销图片墙推荐\"><span class=\"label label-success radius\">图片墙推荐</span></a>";
+			data_desc = '设置图片墙推荐';
+			break;
+		case 'not_rec_pic':
+			attr = 'recpic';
+			send_data = 'is_rec_pic:0';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','rec_pic','"+wx_name+"')\" title=\"设置图片墙推荐\"><span class=\"label radius\">普通</span></a>";
+			data_desc = '撤销图片墙推荐';
+			break;
+		case 'rec':
+			attr = 'recommend';
+			send_data = 'is_recommend:1';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','not_rec','"+wx_name+"')\" title=\"撤销推荐\"><span class=\"label label-success radius\">推荐</span></a>";
+			data_desc = '设置推荐';
+			break;
+		case 'not_rec':
+			attr = 'recommend';
+			send_data = 'is_recommend:0';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','rec','"+wx_name+"')\" title=\"设置推荐\"><span class=\"label radius\">普通</span></a>";
+			data_desc = '撤销推荐';
+			break;
+		case 'hot':
+			attr = 'hot';
+			send_data = 'is_hot:1';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','not_hot','"+wx_name+"')\" title=\"撤销热门\"><span class=\"label label-success radius\">热门</span></a>";
+			data_desc = '设置热门';
+			break;
+		case 'not_hot':
+			attr = 'hot';
+			send_data = 'is_hot:0';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','hot','"+wx_name+"')\" title=\"设置热门\"><span class=\"label radius\">普通</span></a>";
+			data_desc = '撤销热门';
+			break;
+		case 'good':
+			attr = 'good';
+			send_data = 'is_good:1';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','not_good','"+wx_name+"')\" title=\"撤销优秀\"><span class=\"label label-success radius\">优秀</span></a>";
+			data_desc = '设置优秀';
+			break;
+		case 'not_good':
+			attr = 'good';
+			send_data = 'is_good:0';
+			newHtml = "<a onclick=\"upd_attr(this,'"+wx_id+"','good','"+wx_name+"')\" title=\"设置优秀\"><span class=\"label radius\">普通</span></a>";
+			data_desc = '撤销优秀';
+			break;
+		default:
+			layer.alert('参数错误！',{icon:11});
+			return ;
+			break;
+	}
+	layer.confirm('确定要进行操作吗？',{icon:0},function(){
+		$.ajax({
+			type: "POST",
+			url: '{:U("Wxno/Index/wxnoAttrUpd")}',
+			async: true,
+			data: {
+				"wx_id":wx_id,
+				"wx_name":wx_name,
+				"send_data":send_data,
+				"data_desc":data_desc,
+			},
+			dataType: "json",
+			beforeSend:function(XMLHttpRequest){
+              	$('.layui-layer-close').click();
+              	iii = layer.load(1, {
+              		skin: '',
+			    	shade: [0.5, '#fff']
+			  	});
+         	},
+			complete:function(XMLHttpRequest,textStatus){
+             	layer.close(iii);
+           	},
+			success:function(js_msg){
+				if (js_msg.code==1){
+					$(obj).parents("tr").find(".td-"+attr).html(newHtml);
+					layer.msg('操作完成，请刷新页面查看！',{icon:1,time:1000});
+				}else{
+					if (js_msg.status == 0)
+						layer.msg('没有权限！',{icon:9,time:3000});
+					else
+						layer.msg('操作失败，请稍后重试！',{icon:9,time:3000});
+				}
+			},
+			error:function(msg){
+				layer.msg('系统异常！',{icon:9,time:3000});
+			}
+		});
+	});
+}
+function wxno_stop(obj,wx_id,wx_name,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"wxno_stop(this,'"+wx_id+"','"+wx_name+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('禁用公众号将禁用其下所有文章，确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/Index/wxnoStop")}',
+				async: true,
+				data: {
+					"wx_id":wx_id,
+					"wx_name":wx_name,
+					"met":"stop"
+				},
+				dataType: "json",
+				beforeSend:function(XMLHttpRequest){
+	              	$('.layui-layer-close').click();
+	              	iii = layer.load(1, {
+	              		skin: '',
+				    	shade: [0.5, '#fff']
+				  	});
+	         	},
+				complete:function(XMLHttpRequest,textStatus){
+	             	layer.close(iii);
+	           	},
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+						$(obj).remove();
+						layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+					}else{
+                        if (js_msg.status == 0)
+                            layer.msg('没有权限！',{icon:9,time:3000});
+                        else
+						    layer.msg(js_msg.msg,{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"wxno_stop(this,'"+wx_id+"','"+wx_name+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('启用公众号将启用其下所有文章，确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/Index/wxnoStop")}',
+				async: true,
+				data: {
+					"wx_id":wx_id,
+					"wx_name":wx_name,
+					"met":"start"
+				},
+				dataType: "json",
+				beforeSend:function(XMLHttpRequest){
+	              	$('.layui-layer-close').click();
+	              	iii = layer.load(1, {
+	              		skin: '',
+				    	shade: [0.5, '#fff']
+				  	});
+	         	},
+				complete:function(XMLHttpRequest,textStatus){
+	             	layer.close(iii);
+	           	},
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+						$(obj).remove();
+						layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+					}else{
+                        if (js_msg.status == 0)
+                            layer.msg('没有权限！',{icon:9,time:3000});
+                        else
+						    layer.msg(js_msg.msg,{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'del'){
+		layer.confirm('删除公众号将删除其下所有文章，确定要删除吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/Index/wxnoDel")}',
+				async: true,
+				data: {
+					"wx_id":wx_id,
+					"wx_name":wx_name
+				},
+				dataType: "json",
+				beforeSend:function(XMLHttpRequest){
+	              	$('.layui-layer-close').click();
+	              	iii = layer.load(1, {
+	              		skin: '',
+				    	shade: [0.5, '#fff']
+				  	});
+	         	},
+				complete:function(XMLHttpRequest,textStatus){
+	             	layer.close(iii);
+	           	},
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").remove();
+						layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+					}else{
+                        if (js_msg.status == 0)
+                            layer.msg('没有权限！',{icon:9,time:3000});
+                        else
+						    layer.msg(js_msg.msg,{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

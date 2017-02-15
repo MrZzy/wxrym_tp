@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>网站文章列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 文章/公告管理 
+	<span class="c-gray en">&gt;</span> 网站文章列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Webarticle/Index/artEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加文章
+			</a>
+		</span>
+		<span class="r">共有数据：<strong><?php echo count($artList);?></strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">网站文章列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="art_ids[]" value="" /></th>
+				<th width="">文章ID</th>
+				<th width="">文章标题</th>
+				<th width="">简介</th>
+				<th width="">添加时间</th>
+				<th width="">更新时间</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="artList" id="art" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$art.art_id}" name="art_ids[]" /></td>
+				<td>{$art.art_id}</td>
+				<td><a href="javascript:;" target="_blank" class="pro_title_a">{$art.art_title}</a></td>
+				<td>{$art.art_desc|subtext=70}</td>
+				<td>{$art.add_time}</td>
+				<td>{$art.upd_time}</td>
+				<td class="td-manage">
+					<a title="信息编辑" href="{:U('Webarticle/Index/artEdit',array('art_id'=>$art['art_id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_del neq '1' and $art['art_id'] gt '999'">
+					<a title="删除" href="javascript:;" onclick="art_del(this,'{$art['art_id']}','{$art['art_title']}')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function art_del(obj,art_id,art_title){
+	layer.confirm('确定要删除吗？',{icon:0},function(){
+		$.ajax({
+			type: "POST",
+			url: '{:U("Webarticle/Index/artDel")}',
+			async: false,
+			data: {
+				"art_id":art_id,
+				"art_title":art_title
+			},
+			dataType: 'json',
+			success:function(js_msg){
+				if (js_msg.code==1){
+					$(obj).parents("tr").remove();
+					layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+				}else{
+					layer.msg('删除文章失败，请稍后重试！',{icon:9,time:3000});
+				}
+			},
+			error:function(msg){
+				layer.msg('系统异常！',{icon:9,time:3000});
+			}
+		});
+	});
+}
+</script>
+</body>
+</html>

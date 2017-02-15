@@ -1,0 +1,197 @@
+<include file="./Public/header.html" />
+<!--content start-->
+<div class="content">
+	<div class="brilliant-section team">
+		<div class="container">
+		<h2>优秀公众号推荐<span class="h2_read_more"><a href="{$do_main}/wxs/rec_i">READ MORE &#187;</a></span></h2>
+		<div class="team-grids">
+			<section>
+				<ul id="da-thumbs" class="da-thumbs">
+				<?php $rec_pic = count($rec_pic_wxno);$append_rec_pic = 10 - $rec_pic;?>
+				<volist name="rec_pic_wxno" id="rec_pic" key="k">
+					<li>
+						<a href="{$do_main}/wxart/{$rec_pic.wx_no}" class="b-link-stripe b-animate-go thick box">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$rec_pic.wx_logo}" alt="{$rec_pic.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" caption="{$rec_pic.wx_desc}" />
+							<div title="{$rec_pic.wx_name} _ 点击公众号名称查看二维码">
+								<h4 style="color:#fff;text-align:center;margin-top:5px;" href="<?php echo C('GET_FILE_PATH');?>wxno/{$rec_pic.wx_img}" title="查看《{$rec_pic.wx_name}》二维码" desc="{$rec_pic.wx_desc}">{$rec_pic.wx_name}</h4>
+								<p style="margin-top:2px;color:#fff;padding:2px;">{$rec_pic.wx_desc|subtext=35}</p>
+								<if condition="1 neq 1">
+								<h5 href="<?php echo C('GET_FILE_PATH');?>wxno/{$rec_pic.wx_img}" title="查看《{$rec_pic.wx_name}》二维码" desc="{$rec_pic.wx_desc}">{$rec_pic.wx_name}</h5>
+								<span>{$rec_pic.wx_desc|subtext=35}</span>
+								</if>
+							</div>
+						</a>
+					</li>
+				</volist>
+				<if condition="$append_rec_pic gt 999">
+				<for start="0" end="$append_rec_pic" name="i">
+					<if condition="$i lt count($rand_wxno)">
+					<li>
+						<a href="{$do_main}/wxart/{$rand_wxno[$i]['wx_no']}" class="b-link-stripe b-animate-go  thick box">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$rand_wxno[$i]['wx_logo']}" alt="{$rand_wxno[$i]['wx_name']}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+							<div>
+								<h5 href="<?php echo C('GET_FILE_PATH');?>wxno/{$rand_wxno[$i]['wx_img']}" title="查看《{$rand_wxno[$i]['wx_name']}》二维码" desc="{$rand_wxno[$i]['wx_desc']}">{$rand_wxno[$i]['wx_name']}</h5>
+								<span><?php echo subtext($rand_wxno[$i]['wx_desc'],35);?></span>
+							</div>
+						</a>
+					</li>
+					</if>
+				</for>
+				</if>
+				</ul>
+				<div class="clearfix"> </div>
+			</section>
+		</div>
+		</div>
+		<!--lightboxfiles-->
+		<script type="text/javascript">
+		$(function() {
+			$('.team h4').Chocolat();
+			$('.team h5').Chocolat();
+		});
+		</script>
+		<style type="text/css">
+		#Choco_container_description{
+			margin-top: 0px !important;
+			overflow: inherit !important;
+		}
+		</style>
+		<script type="text/javascript" src="<?php echo C('FRONT_RES_PATH');?>js/jquery.hoverdir.js"></script>	
+		<script type="text/javascript">
+			$(function() {
+				$(' #da-thumbs > li ').each( function() { $(this).hoverdir(); } );
+			});
+		</script>
+	</div>
+	<div class="brilliant-section">
+		<div class="container">
+			<h2>近期美文<span class="h2_read_more"><a href="{$do_main}/wxart">READ MORE &#187;</a></span></h2>
+			<div class="brilliant-grids">
+			<for start="0" end="3" name="i">
+				<div class="col-md-4 brilliant-grid">
+					<ul class="new_art_ul">
+						<for start="$i*15" end="45-((3-$i-1)*15)" name="k">
+						<if condition="$new_wxarticle[$k]['aid'] gt 0">
+						<li><a href="{$do_main}/a/{$new_wxarticle[$k]['aid']}" title='{$new_wxarticle[$k]['art_title']}'>{$new_wxarticle[$k]['art_title']|subtext=22}</a></li>
+						</if>
+						</for>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+			</for>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	<div class="price-section">
+		<div class="brilliant-section container">
+			<h2>公众号排行<span class="h2_read_more"><a href="{$do_main}/wx">READ MORE &#187;</a></span></h2>
+			<div class="price-grids">
+				<div class="col-md-3 price-grid">
+					<div class="pricing">
+						<div class="price-top">
+							<h4>推荐</h4>
+						</div>
+						<div class="price-bottom">
+							<ul class="wxno_rank_ul">
+								<?php $rec = count($rec_wxno);$append_rec = 8 - $rec;?>
+								<volist name="rec_wxno" id="rec_l" key="k">
+								<li><a href="{$do_main}/wxart/{$rec_l.wx_no}" title="{$rec_l.wx_name}">{$rec_l.wx_name}</a></li>
+								</volist>
+								<if condition="$append_rec gt 0">
+								<for start="0" end="$append_rec">
+								<li class="bs_contact"><span><a href="http://wpa.qq.com/msgrd?v=3&uin={$cfg_index.web_business_qq}&site=www.wxrym.cn&menu=yes" title="申请推荐" target="_blank">虚位以待</a></span></li>
+								</for>
+								</if>
+							</ul>
+							<a href="{$do_main}/wxs/rec" class="button1">READ MORE</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 price-grid">
+					<div class="pricing">
+						<div class="price-top">
+							<h4>热门</h4>
+						</div>
+						<div class="price-bottom">
+							<ul class="wxno_rank_ul">
+								<?php $hot = count($hot_wxno);$append_hot = 8 - $hot;?>
+								<volist name="hot_wxno" id="hot_l" key="k">
+								<li><a href="{$do_main}/wxart/{$hot_l.wx_no}" title="{$hot_l.wx_name}">{$hot_l.wx_name}</a></li>
+								</volist>
+								<if condition="$append_hot gt 0">
+								<for start="0" end="$append_hot">
+								<li class="bs_contact"><span><a href="http://wpa.qq.com/msgrd?v=3&uin={$cfg_index.web_business_qq}&site=www.wxrym.cn&menu=yes" title="申请热门" target="_blank">虚位以待</a></span></li>
+								</for>
+								</if>
+							</ul>
+							<a href="{$do_main}/wxs/hot" class="button1">READ MORE</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 price-grid">
+					<div class="pricing">
+						<div class="price-top">
+							<h4>优秀</h4>
+						</div>
+						<div class="price-bottom">
+							<ul class="wxno_rank_ul">
+								<?php $hot = count($good_wxno);$append_good = 8 - $hot;?>
+								<volist name="good_wxno" id="good_l" key="k">
+								<li><a href="{$do_main}/wxart/{$good_l.wx_no}" title="{$good_l.wx_name}">{$good_l.wx_name}</a></li>
+								</volist>
+								<if condition="$append_good gt 0">
+								<for start="0" end="$append_good">
+								<li class="bs_contact"><span><a href="http://wpa.qq.com/msgrd?v=3&uin={$cfg_index.web_business_qq}&site=www.wxrym.cn&menu=yes" title="申请优秀" target="_blank">虚位以待</a></span></li>
+								</for>
+								</if>
+							</ul>
+							<a href="{$do_main}/wxs/best" class="button1">READ MORE</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 price-grid">
+					<div class="pricing">
+						<div class="price-top">
+							<h4>最新</h4>
+						</div>
+						<div class="price-bottom">
+							<ul class="wxno_rank_ul">
+								<volist name="new_wxno" id="new_l" key="k">
+								<li><a href="{$do_main}/wxart/{$new_l.wx_no}" title="{$new_l.wx_name}">{$new_l.wx_name}</a></li>
+								</volist>
+							</ul>
+							<a href="{$do_main}/wxs/new" class="button1">READ MORE</a>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+	<div class="post-section">
+		<div class="brilliant-section container">
+			<h2>今日美文精选<span class="h2_read_more"><a href="{$do_main}/wart/best">READ MORE &#187;</a></span></h2>
+			<div class="post-grids">
+				<volist name="best_wxarticle" id="best_l" key="k">
+				<div class="col-md-3 best_art_list post-grid">
+					<a href="{$do_main}/a/{$best_l.aid}" class="mask">
+					<if condition="$best_l['wx_logo'] neq ''">
+					<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$best_l.art_pic}" onerror="javascript:this.src='<?php echo C('GET_FILE_PATH');?>wxno/{$best_l.wx_logo}'" class="img-responsive zoom-img" width="100%" alt="{$best_l.art_title}" title="{$best_l.art_title}" />
+					<else />
+					<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$best_l.art_pic}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" class="img-responsive zoom-img" alt="{$best_l.art_title}" title="{$best_l.art_title}" />
+					</if>
+					</a>
+					<if condition="1 neq 1">
+					<a href="{$do_main}/a/{$best_l.aid}"><h4>{$best_l.art_title|subtext=20}</h4></a>
+					<p>{$best_l.art_desc|subtext=35}</p>
+					</if>
+				</div>
+				</volist>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--content end-->
+<include file="./Public/footer.html" />

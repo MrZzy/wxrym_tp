@@ -1,0 +1,82 @@
+<include file="./Public/header.html" />
+<!--content start-->
+<div class="content">
+	<div class="art_info_box container">
+		<div class="artinfo_content">{$artInfo.art_content}</div>
+		<div class="artinfo_ewm" id="artinfo_ewm">
+			<h4 class="ewm_title">关于<a href="{$do_main}/wxart/{$artInfo.wx_no}">{$artInfo.wx_name}</a></h4>
+			<p class="ewm_desc">{$artInfo.wx_desc}</p>
+			<h5 class="ewm_ewm">{$artInfo.wx_name} _ 微信二维码</h5>
+			<p>
+			<if condition="$artInfo['wx_img'] neq ''">
+			<a href="<?php echo C('GET_FILE_PATH');?>wxno/{$artInfo.wx_img}" title="查看《{$artInfo.wx_name}》二维码" target="_blank" id="show_ewm">
+			<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$artInfo.wx_img}" class="img-responsive" alt="{$artInfo.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+			</a>
+			<else />
+			<img src="<?php echo C('GET_FILE_PATH');?>wxno/{$artInfo.wx_img}" class="img-responsive" alt="{$artInfo.wx_name}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_400.png'" />
+			</if>
+			</p>
+			<div class="share_wn">
+			<div class="bdsharebuttonbox">
+				<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+				<a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+				<a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+				<a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+				<a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+				<a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+				<a href="#" class="bds_copy" data-cmd="copy" title="复制网址"></a>
+				<a href="#" class="bds_more" data-cmd="more"></a>
+				<div class="clearfix"></div>
+			</div>
+			<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="history-section">
+		<div class="container" id="list_container">
+			<div id="wxart_container" class="artinfo_content">
+				<h3>{$artInfo.wx_name}（{$artInfo.wx_no}） _ 最新文章</h3>
+				<volist name="newArt_list" id="art_l" key="k">
+				<div class="history-grids-allart art_list_div">
+					<div class="col-md-12 history-grid">
+						<a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>
+						<div class="history-left">
+						<if condition="$art_l['wx_logo_thumb'] neq ''">
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('GET_FILE_PATH');?>wxno/{$art_l.wx_logo_thumb}'" />
+						<else />
+							<img src="<?php echo C('GET_FILE_PATH');?>wxarticle/{$art_l.art_pic}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic_thumb.png'" />
+						</if>
+						</div>
+						</a>
+						<div class="history-right">
+							<h4><?php echo ($art_l['is_best']=='1' ? '<font color="red" title="任意门优选">[优]</font>' : '').($art_l['is_hot']=='1' ? '<font color="red" title="热门公众号">[热]</font>' : '');?><a href="{$do_main}/a/{$art_l.aid}" title='{$art_l.art_title}'>{$art_l.art_title}&nbsp;[{$art_l.add_time|time_tran}]</a></h4>
+							<p><a href="{$do_main}/a/{$art_l.aid}">{$art_l.art_desc|subtext=120}</a></p>
+						</div>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				</volist>
+			</div>
+			<div class="clearfix"></div>
+			<a class="loading_more" href="{$do_main}/wxart/{$artInfo.wx_no}">查 看 更 多</a>
+		</div>
+	</div>
+</div>
+<!--content end-->
+<script type="text/javascript">
+$(function() { 
+    var elm = $('#artinfo_ewm'); 
+    var startPos = $(elm).offset().top; 
+    $.event.add(window, "scroll", function() { 
+        var p = $(window).scrollTop(); 
+        $(elm).css('position',((p) > startPos) ? 'relative' : 'static'); 
+        $(elm).css('top',((p) > startPos) ? (p-startPos)+'px' : ''); 
+    }); 
+	$('#show_ewm').Chocolat();
+	$('#post-user').attr('href','{$do_main}/wxart/{$artInfo.wx_no}');
+	$('#js_view_source').attr('href','<?php echo htmlspecialchars_decode($artInfo['art_real_link']);?>');
+	$('#js_view_source').attr('target','_blank');
+});
+</script>
+<include file="./Public/footer.html" />

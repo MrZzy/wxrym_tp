@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+<title>站点设置页 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 站点管理 
+	<span class="c-gray en">&gt;</span> 站点基本设置 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div id="tab_box">
+		<div class="tabBar cl"><span>基本设置</span><span>安全设置</span><span>其他设置</span></div>
+		<div class="tabCon">
+			<form action="{:U('Config/Index/cfgSave')}" method="post" class="form form-horizontal" id="frm_cfg_save_1" enctype="multipart/form-data">
+			<input type="hidden" name="upd_type" value="基本设置" />
+			<volist name="cfgInfo_base" id="cfg_base" key="k">
+				<div class="row cl">
+					<label class="form-label col-2"><if condition="$cfg_base['is_null'] eq '0'"><span class="c-red">*</span></if>{$cfg_base.cfg_name}：</label>
+					<if condition="$cfg_base['value_type'] eq 'string'">
+						<div class="formControls col-4">
+							<input type="text" class="input-text" id="{$cfg_base.cfg_tag}" name="{$cfg_base.cfg_tag}" value="{$cfg_base.cfg_value}" placeholder="{$cfg_base.title_tips}" title="{$cfg_base.title_tips}" <if condition="$cfg_base['is_null'] eq '0'">datatype="*"</if> />
+						</div>
+					<elseif condition="$cfg_base['value_type'] eq 'radio'" />
+						<div class="formControls col-4 skin-minimal" style="width:auto;" title="{$cfg_base.title_tips}">
+						<?php
+						$radio_value = $cfg_base['value_default'];
+						$radio_value_arr = explode('|',$radio_value);
+						?>
+						<volist name="radio_value_arr" id="rd_val" key="k">
+							<div class="radio-box">
+								<input type="radio" name="{$cfg_base.cfg_tag}" id="rd_{$k}" value="{$k- 1}" <if condition="$cfg_base['cfg_value'] eq $k-1">checked</if> />
+								<label for="rd_{$k}">{$rd_val}</label>
+							</div>
+						</volist>
+						</div>
+					<elseif condition="$cfg_base['value_type'] eq 'select'" />
+						<div class="formControls col-4" style="width:auto;" title="{$cfg_base.title_tips}">
+							<?php
+							$select_value = $cfg_base['value_default'];
+							$select_value_arr = explode('|',$select_value);
+							?>
+							<span class="select-box" style="width:150px;">
+								<select class="select" name="{$cfg_base.cfg_tag}" size="1" style="width:100%;">
+									<volist name="select_value_arr" id="selc" key="k">
+									<option value="{$k}" <if condition="$cfg_base['cfg_value'] eq $k">selected</if>>{$selc}</option>
+									</volist>
+								</select>
+							</span>
+						</div>
+					<elseif condition="$cfg_base['value_type'] eq 'text'" />
+						<div class="formControls col-4">
+							<textarea name="{$cfg_base.cfg_tag}" class="textarea" placeholder="{$cfg_base.title_tips}" title="{$cfg_base.title_tips}" dragonfly="true" onfocus="textarealength(this,300)" onKeyUp="textarealength(this,300)" maxlength="300" <if condition="$cfg_base['is_null'] eq '0'">datatype="*"</if>>{$cfg_base.cfg_value}</textarea>
+							<p class="textarea-numberbar"><em class="textarea-length">0</em>/300</p>
+						</div>
+					</if>
+					<div class="form-label cfg_tips col-4">{$cfg_base.cfg_tips}</div>
+				</div>
+			</volist>
+			<if condition="count($cfgInfo_base) gt 0">
+				<div class="row cl">
+					<div class="col-9 col-offset-3">
+						<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />
+					</div>
+				</div>
+			</if>
+			</form>
+		</div>
+		<div class="tabCon">
+			<form action="{:U('Config/Index/cfgSave')}" method="post" class="form form-horizontal" id="frm_cfg_save_2" enctype="multipart/form-data">
+			<input type="hidden" name="upd_type" value="安全设置" />
+			<volist name="cfgInfo_security" id="cfg_sec" key="k">
+				<div class="row cl">
+					<label class="form-label col-2"><if condition="$cfg_sec['is_null'] eq '0'"><span class="c-red">*</span></if>{$cfg_sec.cfg_name}：</label>
+					<if condition="$cfg_sec['value_type'] eq 'string'">
+						<div class="formControls col-4">
+							<input type="text" class="input-text" id="{$cfg_sec.cfg_tag}" name="{$cfg_sec.cfg_tag}" value="{$cfg_sec.cfg_value}" placeholder="{$cfg_sec.title_tips}" title="{$cfg_sec.title_tips}" <if condition="$cfg_base['is_null'] eq '0'">datatype="*"</if> />
+						</div>
+					<elseif condition="$cfg_sec['value_type'] eq 'radio'" />
+						<div class="formControls col-4 skin-minimal" style="width:auto;" title="{$cfg_sec.title_tips}">
+						<?php
+						$radio_value = $cfg_sec['value_default'];
+						$radio_value_arr = explode('|',$radio_value);
+						?>
+						<volist name="radio_value_arr" id="rd_val" key="k">
+							<div class="radio-box">
+								<input type="radio" id="rd_{$k}" name="{$cfg_sec.cfg_tag}" value="{$k- 1}" <if condition="$cfg_sec['cfg_value'] eq $k-1">checked</if> />
+								<label for="rd_{$k}">{$rd_val}</label>
+							</div>
+						</volist>
+						</div>
+					<elseif condition="$cfg_sec['value_type'] eq 'select'" />
+						<div class="formControls col-4" style="width:auto;" title="{$cfg_sec.title_tips}">
+							<?php
+							$select_value = $cfg_sec['value_default'];
+							$select_value_arr = explode('|',$select_value);
+							?>
+							<span class="select-box" style="width:150px;">
+								<select class="select" name="{$cfg_sec.cfg_tag}" size="1" style="width:100%;">
+									<volist name="select_value_arr" id="selc" key="k">
+									<option value="{$k}" <if condition="$cfg_sec['cfg_value'] eq $k">selected</if>>{$selc}</option>
+									</volist>
+								</select>
+							</span>
+						</div>
+					<elseif condition="$cfg_sec['value_type'] eq 'text'" />
+						<div class="formControls col-4">
+							<textarea name="{$cfg_sec.cfg_tag}" class="textarea" placeholder="{$cfg_sec.title_tips}" title="{$cfg_sec.title_tips}" dragonfly="true" onfocus="textarealength(this,300)" onKeyUp="textarealength(this,300)" maxlength="300" <if condition="$cfg_base['is_null'] eq '0'">datatype="*"</if>>{$cfg_sec.cfg_value}</textarea>
+							<p class="textarea-numberbar"><em class="textarea-length">0</em>/300</p>
+						</div>
+					</if>
+					<div class="form-label cfg_tips col-4">{$cfg_sec.cfg_tips}</div>
+				</div>
+			</volist>
+			<if condition="count($cfgInfo_security) gt 0">
+				<div class="row cl">
+					<div class="col-9 col-offset-3">
+						<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />
+					</div>
+				</div>
+			</if>
+			</form>
+		</div>
+		<div class="tabCon">
+			<form action="{:U('Config/Index/cfgSave')}" method="post" class="form form-horizontal" id="frm_cfg_save_3" enctype="multipart/form-data">
+			<input type="hidden" name="upd_type" value="其他设置" />
+			<volist name="cfgInfo_other" id="cfg_other" key="k">
+				<div class="row cl">
+					<label class="form-label col-2"><if condition="$cfg_other['is_null'] eq '0'"><span class="c-red">*</span></if>{$cfg_other.cfg_name}：</label>
+					<if condition="$cfg_other['value_type'] eq 'string'">
+						<div class="formControls col-4">
+							<input type="text" class="input-text" id="{$cfg_other.cfg_tag}" name="{$cfg_other.cfg_tag}" value="{$cfg_other.cfg_value}" placeholder="{$cfg_other.title_tips}" title="{$cfg_other.title_tips}" <if condition="$cfg_other['is_null'] eq '0'">datatype="*"</if> />
+						</div>
+					<elseif condition="$cfg_other['value_type'] eq 'radio'" />
+						<div class="formControls col-4 skin-minimal" style="width:auto;" title="{$cfg_other.title_tips}">
+						<?php
+						$radio_value = $cfg_other['value_default'];
+						$radio_value_arr = explode('|',$radio_value);
+						?>
+						<volist name="radio_value_arr" id="rd_val" key="k">
+							<div class="radio-box">
+								<input type="radio" id="rd_{$k}" name="{$cfg_other.cfg_tag}" value="{$k- 1}" <if condition="$cfg_other['cfg_value'] eq $k-1">checked</if> />
+								<label for="rd_{$k}">{$rd_val}</label>
+							</div>
+						</volist>
+						</div>
+					<elseif condition="$cfg_other['value_type'] eq 'select'" />
+						<div class="formControls col-4" style="width:auto;" title="{$cfg_other.title_tips}">
+							<?php
+							$select_value = $cfg_other['value_default'];
+							$select_value_arr = explode('|',$select_value);
+							?>
+							<span class="select-box" style="width:150px;">
+								<select class="select" name="{$cfg_other.cfg_tag}" size="1" style="width:100%;">
+									<volist name="select_value_arr" id="selc" key="k">
+									<option value="{$k}" <if condition="$cfg_other['cfg_value'] eq $k">selected</if>>{$selc}</option>
+									</volist>
+								</select>
+							</span>
+						</div>
+					<elseif condition="$cfg_other['value_type'] eq 'text'" />
+						<div class="formControls col-4">
+							<textarea name="{$cfg_other.cfg_tag}" class="textarea" placeholder="{$cfg_other.title_tips}" title="{$cfg_other.title_tips}" dragonfly="true" onfocus="textarealength(this,300)" onKeyUp="textarealength(this,300)" maxlength="300" <if condition="$cfg_base['is_null'] eq '0'">datatype="*"</if>>{$cfg_other.cfg_value}</textarea>
+							<p class="textarea-numberbar"><em class="textarea-length">0</em>/300</p>
+						</div>
+					</if>
+					<div class="form-label cfg_tips col-4">{$cfg_other.cfg_tips}</div>
+				</div>
+			</volist>
+			<if condition="count($cfgInfo_other) gt 0">
+				<div class="row cl">
+					<div class="col-9 col-offset-3">
+						<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />
+					</div>
+				</div>
+			</if>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#frm_cfg_save_1").Validform({
+		tiptype:2,
+		callback:function(form){
+			form[0].submit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+	$("#frm_cfg_save_2").Validform({
+		tiptype:2,
+		callback:function(form){
+			form[0].submit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+	$("#frm_cfg_save_3").Validform({
+		tiptype:2,
+		callback:function(form){
+			form[0].submit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+	$.Huitab("#tab_box .tabBar span","#tab_box .tabCon","current","click","0");
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>管理员列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 权限管理 
+	<span class="c-gray en">&gt;</span> 管理员列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="frm_search">
+		<form action="{:U('Access/Index/mList')}" method="post" id="frm_srch_admin">
+			添加日期：
+			<input type="text" onfocus="WdatePicker()" id="date_start" name="date_start" value="{$_REQUEST['date_start']}" class="input-text Wdate" />
+			-
+			<input type="text" onfocus="WdatePicker()" id="date_end" name="date_end" value="{$_REQUEST['date_end']}" class="input-text Wdate" />
+			<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" name="srch_text" value="{$_REQUEST['srch_text']}" />
+			<select name="grp_id" class="select" onchange="javascript:$('#frm_srch_admin').submit();">
+				<option value="0">所有群组</option>
+				<volist name="member_group" id="grp">
+				<option value="{$grp.grp_id}" <if condition="$_REQUEST['grp_id'] eq $grp['grp_id']">selected</if>>{$grp.grp_name}</option>
+				</volist>
+			</select>
+			<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>&nbsp;
+			<a href="{:U('Access/Index/mList')}" class="btn btn-danger radius">清除查询条件</a>
+		</form>
+	</div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Access/Index/mInfo')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加管理员
+			</a>
+		</span>
+		<span class="r">共有数据：<strong>{$row_count}</strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">管理员列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="m_ids[]" value="" /></th>
+				<th width="8%">账户名</th>
+				<th width="8%">真实姓名</th>
+				<th width="8%">群组名称</th>
+				<th width="6%">手机</th>
+				<th width="6%">Q Q</th>
+				<th width="8%">邮箱</th>
+				<th width="12%">联系地址</th>
+				<th width="14%">加入时间</th>
+				<th width="12%">备注</th>
+				<th width="4%">是否启用</th>
+				<th width="12%">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="admin_member_list" id="admin_list" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$admin_list.id}" name="m_ids[]" /></td>
+				<td>{$admin_list.member_name}</td>
+				<td>{$admin_list.real_name}</td>
+				<td>{$admin_list.grp_name}</td>
+				<td>{$admin_list.phone}</td>
+				<td>{$admin_list.qq}</td>
+				<td>{$admin_list.email}</td>
+				<td>{$admin_list.address}</td>
+				<td>{$admin_list.add_time|subtext=19}</td>
+				<td>{$admin_list.desc}</td>
+				<td class="td-status">
+					<if condition="$admin_list['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1' and $admin_list['id'] neq '1'">
+					<if condition="$admin_list['is_delete'] eq '1'">
+					<a onClick="admin_stop(this,'{$admin_list['id']}','{$admin_list['member_name']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="admin_stop(this,'{$admin_list['id']}','{$admin_list['member_name']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="{:U('Access/Index/mInfo',array('mid'=>$admin_list['id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_access neq '1'">
+					<a title="权限" href="{:U('Access/Index/mInfo',array('met'=>'access','mid'=>$admin_list['id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe60e;</i>
+					</a>
+				</if>
+				<if condition="$unabled_del neq '1' and $admin_list['id'] neq '1'">
+					<a title="删除" href="javascript:;" onclick="admin_stop(this,'{$admin_list['id']}','{$admin_list['member_name']}','del')" class="ml-5" style="text-decoration:none">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<div class="page_div">{$page}</div>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function admin_stop(obj,mid,mname,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"admin_stop(this,'"+mid+"','"+mname+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/Index/mStop")}',
+				async: false,
+				data: "mid="+mid+"&mname="+mname+"&met=stop",
+				//dataType: "text",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+					$(obj).remove();
+					layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('禁用账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"admin_stop(this,'"+mid+"','"+mname+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/Index/mStop")}',
+				async: false,
+				data: "mid="+mid+"&mname="+mname+"&met=start",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('启用账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'del'){
+		layer.confirm('确定要删除吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Access/Index/mDel")}',
+				async: false,
+				data: "mid="+mid+"&mname="+mname,
+				success:function(msg){
+					$(obj).parents("tr").remove();
+					layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('删除账户失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

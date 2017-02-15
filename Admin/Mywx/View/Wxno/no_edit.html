@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+
+<title>我的公众号详情页 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 我的公众号管理
+	<span class="c-gray en">&gt;</span> 我的公众号列表
+	<span class="c-gray en">&gt;</span> 我的公众号信息更改/添加
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="{:U('Mywx/Wxno/wxList')}" title="返回列表页" >
+		<i class="Hui-iconfont">&#xe66b;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<form action="{:U('Mywx/Wxno/wxAdd')}" method="post" class="form form-horizontal" id="frm_no_save" enctype="multipart/form-data">
+		<if condition="$noInfo['wx_id'] gt 0">
+		<input type="hidden" name="save" value="1" />
+		<input type="hidden" name="wx_id" value="{$noInfo.wx_id}" />
+		<else />
+		<input type="hidden" name="add" value="1" />
+		</if>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>公众号名称：</label>
+			<div class="formControls col-6">
+				<if condition="$noInfo['wx_id'] gt 0">
+				<input type="hidden" name="old_name" value="{$noInfo.wx_name}" />
+				</if>
+				<input type="text" class="input-text" value="{$noInfo.wx_name}" placeholder="" id="wx_name" name="wx_name" datatype="*" nullmsg="公众号名称不能为空！" maxlength="100" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>公众号ID：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text" value="{$noInfo.wx_no}" placeholder="" id="wx_no" name="wx_no" datatype="*" nullmsg="公众号ID不能为空！" maxlength="100" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>所属分类：</label>
+			<div class="formControls col-6">
+				<span class="select-box" style="width:150px;">
+					<select class="select" name="cat_id" size="1" style="width:100%;">
+						<volist name="catList" id="nt">
+						<option value="{$nt.cat_id}" <if condition="$noInfo['cat_id'] eq $nt['cat_id']">selected</if>>{$nt.cat_name}</option>
+						</volist>
+					</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">公众号logo：</label>
+			<div class="formControls col-7" id="preview">
+				<div class="pre_img_box" style="height:120px;width:160px;">
+					<if condition="$noInfo['wx_logo'] neq ''">
+						<input type="hidden" name="old_logo" value="{$noInfo.wx_logo}" />
+						<img id="imghead_logo" src="<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo.wx_logo}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" style="max-height:120px;max-width:160px;" />
+					<else />
+						<img id="imghead_logo" src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" style="max-height:120px;max-width:160px;" />
+					</if>
+				</div>
+				<font class="img_sel_tips">请选择‘jpg/png/gif/bmp’格式图片<br />宽高各100像素<br />若选择图片无法预览，请更换浏览器</font>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">logo图片上传：</label>
+			<div class="formControls col-7">
+				<span class="btn-upload form-group">
+					<input class="input-text upload-url" type="text" name="up_filename" id="up_filename" value="" readonly style="width:200px" />
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+					<input type="file" multiple name="file_logo" class="input-file" onchange="previewImage(this,'logo')" />
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">公众号二维码：</label>
+			<div class="formControls col-7" id="preview">
+				<div class="pre_img_box" style="height:120px;width:160px;">
+					<if condition="$noInfo['wx_img'] neq ''">
+						<input type="hidden" name="old_img" value="{$noInfo.wx_img}" />
+						<img id="imghead_img" src="<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo.wx_img}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" style="max-height:120px;max-width:160px;" />
+					<else />
+						<img id="imghead_img" src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" style="max-height:120px;max-width:160px;" />
+					</if>
+				</div>
+				<font class="img_sel_tips">请选择‘jpg/png/gif/bmp’格式图片<br />宽高各200像素<br />若选择图片无法预览，请更换浏览器</font>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">二维码图片上传：</label>
+			<div class="formControls col-7">
+				<span class="btn-upload form-group">
+					<input class="input-text upload-url" type="text" name="up_filename" id="up_filename" value="" readonly style="width:200px" />
+					<a href="javascript:void();" class="btn btn-primary upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+					<input type="file" multiple name="file_img" class="input-file" onchange="previewImage(this,'img')" />
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>公众号简介：</label>
+			<div class="formControls col-6">
+				<textarea name="wx_desc" cols="" rows="" class="textarea" placeholder="说点什么...300个字符以内" dragonfly="true" onfocus="textarealength(this,300)" onKeyUp="textarealength(this,300)" maxlength="300" datatype="*" nullmsg="公众号简介不能为空！">{$noInfo.wx_desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/300</p>
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">SEO标题：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text" value="{$noInfo.seo_title}" placeholder="" id="seo_title" name="seo_title" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">SEO关键词：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text" value="{$noInfo.seo_keywords}" placeholder="" id="seo_keywords" name="seo_keywords" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">SEO描述：</label>
+			<div class="formControls col-6">
+				<textarea name="seo_desc" cols="" rows="" class="textarea" placeholder="说点什么...200个字符以内" dragonfly="true" onfocus="textarealength(this,200)" onKeyUp="textarealength(this,200)" maxlength="200">{$noInfo.seo_desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+			<div class="col-3"></div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<input class="btn btn-default radius" type="reset" value="&nbsp;&nbsp;重新填写&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<a class="btn btn-default radius" href="{:U('Mywx/Wxno/wxList')}" title="返回列表页">取消</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#frm_no_save").Validform({
+		tiptype:2,
+	});
+});
+//图片上传预览 - 提交前可预览
+function previewImage(file,type){
+	var img = document.getElementById('imghead_'+type);
+	var reader = new FileReader();
+	if (file.files && file.files[0]){
+		var pic_ext = /\.[^\.]+/.exec(file.files[0].name);	//后缀 .jpg
+		var ext = pic_ext.toString().toLowerCase(); //转小写
+		var arr_ext = '.jpg|.png|.gif|.bmp';
+		if (arr_ext.indexOf(ext)>=0){
+			reader.onload = function(evt){img.src = evt.target.result;}
+			reader.readAsDataURL(file.files[0]);
+		}else{
+			$(file).parent().find(".upload-url").val('');
+			if (type == 'logo'){
+				img.src = '<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo['wx_logo']}';
+			}else if (type == 'img'){
+				img.src = '<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo['wx_img']}';
+			}
+			reader.readAsDataURL('');
+		}
+	}else{
+		$(file).parent().find(".upload-url").val('');
+		if (type == 'logo'){
+			img.src = '<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo['wx_logo']}';
+		}else if (type == 'img'){
+			img.src = '<?php echo C('GET_FILE_PATH');?>wxno/{$noInfo['wx_img']}';
+		}
+		reader.readAsDataURL('');
+	}
+}
+</script>
+</body>
+</html>

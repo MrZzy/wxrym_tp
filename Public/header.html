@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" <if condition="empty($this_keywords)">content="{$cfg_index['web_keywords']}"<else />content="{$this_keywords}，{$cfg_index['web_name']}"</if> />
+<meta name="description" <if condition="empty($this_desc)">content="{$cfg_index['web_description']}"<else />content="{$this_desc}，{$cfg_index['web_name']}"</if> />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<title><if condition="$this_title neq ''">{$this_title}-{$cfg_index['web_name']}<else />{$cfg_index['web_title']}</if></title>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<script type="text/javascript">alert('为获得更好的视觉体验，请使用IE9以上的浏览器打开，火狐、谷歌浏览器均可，360浏览器请选择极速模式！');</script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('FRONT_RES_PATH');?>css/article_improve.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('FRONT_RES_PATH');?>css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('FRONT_RES_PATH');?>css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('FRONT_RES_PATH');?>css/front.css" rel="stylesheet" type="text/css" media="all" />
+
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<script src="<?php echo C('FRONT_RES_PATH');?>js/jquery-1.11.1.min.js"></script>
+<script src="<?php echo C('FRONT_RES_PATH');?>js/bootstrap.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('FRONT_RES_PATH');?>js/front.js"></script>
+<!---fonts-->
+<!-- <link href='http://fonts.useso.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
+<link href='http://fonts.useso.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'> -->
+<!---fonts-->
+<!--script-->
+<script src="<?php echo C('FRONT_RES_PATH');?>js/modernizr.custom.97074.js"></script>
+
+<script src="<?php echo C('FRONT_RES_PATH');?>js/jquery.chocolat.js"></script>
+<link rel="stylesheet" href="<?php echo C('FRONT_RES_PATH');?>css/chocolat.css" type="text/css" media="screen">
+
+<!--script-->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?ecc17011af329c11b090a2bd61592bdc";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</head>
+<body>
+<!---header--->
+<div class="header">
+	<div class="container">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<i class="sr-only">Toggle navigation</i>
+						<i class="icon-bar"></i>
+						<i class="icon-bar"></i>
+						<i class="icon-bar"></i>
+					</button>				  
+					<div class="navbar-brand" style="height:auto;margin-left:0px;">
+						<a href="/"><img src="<?php echo C('FRONT_RES_PATH');?>images/logo.png" alt="微信任意门LOGO" title="微信任意门LOGO" style="height:60px !important;" /></a>
+					</div>
+				</div>
+				
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="padding:0px;">
+					<ul class="nav navbar-nav top_nav">
+						<li class="{$url_cur.index}"><a href="/">首页</a></li>
+						<li class="dropdown {$url_cur.wxno}">
+							<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">公众号导航<i class="caret"></i></a>
+							<ul class="dropdown-menu">
+								<li><a href="{$do_main}/wxs/new">最新</a></li>
+								<li><a href="{$do_main}/wxs/rec">推荐</a></li>
+								<!-- <li><a href="{$do_main}/wx">全部</a></li> -->
+								<volist name="wxno_cat_list" id="cat_list" key="k">
+								<li><a href="{$do_main}/wxc/{$cat_list.cat_id}/{$_REQUEST.wxno_srch}">{$cat_list['cat_name']}</a></li>
+								</volist>
+							</ul>
+						</li>
+						<volist name="menu_parent_top" id="m_par_top">
+						<li class="{$url_cur[$m_par_top['menu_tag']]}">
+							<!-- <a <if condition="$m_par_top['is_out'] eq '1'">href="{$m_par_top['menu_url']}"<else />href="/index.php/{$m_par_top['menu_url']}"</if> target="_{$m_par_top['open_met']}">{$m_par_top['menu_name']}</a> -->
+							<a href="{$m_par_top['menu_url']}" target="_{$m_par_top['open_met']}">{$m_par_top['menu_name']}</a>
+							<?php if(count($menu_child_top) > 999){ ?>
+							<!--顶部下拉导航暂无-->
+							<ul class="dropdown-menu sub_nav">
+								<volist name="menu_child_top" id="m_chd_top" key="k">
+									<if condition="$m_chd_top['parent_id'] eq $m_par_top['id']">
+									<li><a <if condition="$m_chd_top['is_out'] eq '1'">href="{$m_chd_top['menu_url']}"<else />href="/index.php/{$m_chd_top['menu_url']}"</if> target="_{$m_chd_top['open_met']}">{$m_chd_top['menu_name']}</a></li>
+									</if>
+								</volist>
+							</ul>
+							<?php } ?>
+						</li>
+						</volist>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</div>
+<!---header--->
+<!--banner start-->
+<if condition="count($bannerIndex_list) gt 999 or count($bannerSingle_list) gt 999">
+<div class="banner">
+	<!--轮播广告 start-->
+	<link href="<?php echo C('FRONT_RES_PATH');?>css/slick.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo C('FRONT_RES_PATH');?>css/slick-theme.css" rel="stylesheet" type="text/css" />
+	<div class="slider-container">
+	    <div class="homepage-slider" data-snap-ignore="true">
+		<if condition="$url_cur['index'] eq 'active'">	<!--首页轮播-->
+	    	<volist name="bannerIndex_list" id="bidx" key="k">
+	        <div class="slick-slide">
+	            <a href="{$bidx.banner_url}" title="{$bidx.banner_title}" target="{$bidx.open_met}">
+	            <img src="<?php echo C('GET_FILE_PATH');?>banner/{$bidx.banner_img}" class="responsive-image" alt="img" style="max-height:400px;display:block;margin:0px auto;" />
+	            </a>
+	        </div>
+	        </volist>
+		<else />	<!--单页轮播-->
+			<volist name="bannerSingle_list" id="bsidx" key="k">
+	        <div class="slick-slide">
+	            <a href="{$bsidx.banner_url}" title="{$bsidx.banner_title}" target="{$bsidx.open_met}">
+	            <img src="<?php echo C('GET_FILE_PATH');?>banner/{$bsidx.banner_img}" class="responsive-image" alt="img" style="max-height:400px;display:block;margin:0px auto;" />
+	            </a>
+	        </div>
+	        </volist>
+		</if>
+	    </div>
+	</div>
+	<script type="text/javascript" src="<?php echo C('FRONT_RES_PATH');?>js/slick.js"></script>
+	<script type="text/javascript">
+	$('.homepage-slider').slick({
+		speed: 500,
+		autoplay: true,
+		arrows:false,
+		dots:true,
+		autoplaySpeed: 3000,
+	});
+	</script>
+</div>
+</if>
+<!--banner end-->
+<div class="cl_10"></div>

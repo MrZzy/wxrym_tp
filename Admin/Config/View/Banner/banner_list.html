@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>轮播广告列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 站点管理 
+	<span class="c-gray en">&gt;</span> 轮播广告列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<span class="l">
+			<a href="{:U('Config/Banner/bannerEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加轮播广告
+			</a>
+		</span>
+		<span class="r">共有数据：<strong><?php echo count($bannerIndex_list) + count($bannerSingle_list);?></strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">轮播广告列表 - 首页</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="b_ids[]" value="" /></th>
+				<th width="">广告标题</th>
+				<th width="">链接地址</th>
+				<th width="">广告图<br />(点击查看大图)</th>
+				<th width="">打开页面</th>
+				<th width="">排序</th>
+				<th width="">添加时间</th>
+				<th width="">是否启用</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="bannerIndex_list" id="ban_index" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$ban_index.id}" name="b_ids[]" /></td>
+				<td>{$ban_index.banner_title}</td>
+				<td><a href="{$ban_index.banner_url}" target="_blank" class="pro_title_a">{$ban_index.banner_url}</a></td>
+				<td class="admin_pro_img">
+				<if condition="$ban_index['banner_img'] neq ''">
+				<a href="<?php echo C('GET_FILE_PATH');?>banner/{$ban_index.banner_img}" target="_blank" class="show_ewm">
+					<img src="<?php echo C('GET_FILE_PATH');?>banner/{$ban_index.banner_img}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td>
+				<if condition="$ban_index['open_met'] eq 'self'">
+				<span class="label label-success radius">当前窗口</span>
+				<else />
+				<span class="label radius">新建窗口</span>
+				</if>
+				</td>
+				<td>{$ban_index.banner_order}</td>
+				<td>{$ban_index.add_time}</td>
+				<td class="td-status">
+					<if condition="$ban_index['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1'">
+					<if condition="$ban_index['is_delete'] eq '1'">
+					<a onClick="banner_stop(this,'{$ban_index['id']}','{$ban_index['banner_title']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="banner_stop(this,'{$ban_index['id']}','{$ban_index['banner_title']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="{:U('Config/Banner/bannerEdit',array('bid'=>$ban_index['id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_del neq '1'">
+					<a title="删除" href="javascript:;" onclick="banner_stop(this,'{$ban_index['id']}','{$ban_index['banner_title']}','del')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">轮播广告列表 - 单页</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="b_ids[]" value="" /></th>
+				<th width="">广告标题</th>
+				<th width="">链接地址</th>
+				<th width="">广告图<br />(点击查看大图)</th>
+				<th width="">打开页面</th>
+				<th width="">排序</th>
+				<th width="">添加时间</th>
+				<th width="">是否启用</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="bannerSingle_list" id="ban_single" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$ban_single.id}" name="b_ids[]" /></td>
+				<td>{$ban_single.banner_title}</td>
+				<td><a href="{$ban_single.banner_url}" target="_blank" class="pro_title_a">{$ban_single.banner_url}</a></td>
+				<td class="admin_pro_img">
+				<if condition="$ban_single['banner_img'] neq ''">
+				<a href="<?php echo C('GET_FILE_PATH');?>banner/{$ban_single.banner_img}" target="_blank" class="show_ewm">
+					<img src="<?php echo C('GET_FILE_PATH');?>banner/{$ban_single.banner_img}" onerror="javascript:this.src='<?php echo C('FRONT_RES_PATH');?>images/no_pic.png'" />
+				</a>
+				<else />
+				<img src="<?php echo C('FRONT_RES_PATH');?>images/no_pic.png" />
+				</if>
+				</td>
+				<td>
+				<if condition="$ban_single['open_met'] eq 'self'">
+				<span class="label label-success radius">当前窗口</span>
+				<else />
+				<span class="label radius">新建窗口</span>
+				</if>
+				</td>
+				<td>{$ban_single.banner_order}</td>
+				<td>{$ban_single.add_time}</td>
+				<td class="td-status">
+					<if condition="$ban_single['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1'">
+					<if condition="$ban_single['is_delete'] eq '1'">
+					<a onClick="banner_stop(this,'{$ban_single['id']}','{$ban_single['banner_title']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="banner_stop(this,'{$ban_single['id']}','{$ban_single['banner_title']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+					<a title="信息编辑" href="{:U('Config/Banner/bannerEdit',array('bid'=>$ban_single['id']))}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				<if condition="$unabled_del neq '1'">
+					<a title="删除" href="javascript:;" onclick="banner_stop(this,'{$ban_single['id']}','{$ban_single['banner_title']}','del')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<script src="<?php echo C('FRONT_RES_PATH');?>js/jquery.chocolat.js"></script>
+<link rel="stylesheet" href="<?php echo C('FRONT_RES_PATH');?>css/chocolat.css" type="text/css" media="screen">
+<script type="text/javascript">
+$(function() {
+	$('.show_ewm').Chocolat();
+});
+</script>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function banner_stop(obj,bid,bname,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"banner_stop(this,'"+bid+"','"+bname+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Config/Banner/bannerStop")}',
+				async: false,
+				data: "bid="+bid+"&bname="+bname+"&met=stop",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+					$(obj).remove();
+					layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('禁用轮播广告信息失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"banner_stop(this,'"+bid+"','"+bname+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Config/Banner/bannerStop")}',
+				async: false,
+				data: "bid="+bid+"&bname="+bname+"&met=start",
+				success:function(msg){
+					$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+					$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+					$(obj).remove();
+					layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('启用轮播广告信息失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'del'){
+		layer.confirm('确定要删除吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Config/Banner/bannerDel")}',
+				async: false,
+				data: "bid="+bid+"&bname="+bname,
+				success:function(msg){
+					$(obj).parents("tr").remove();
+					layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+				},
+				error:function(msg){
+					layer.msg('删除轮播广告信息失败，请稍后重试！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>

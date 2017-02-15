@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+<title>友情链接详情页 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 运营管理 
+	<span class="c-gray en">&gt;</span> 友情链接列表 
+	<span class="c-gray en">&gt;</span> 友情链接信息更改/添加 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="{:U('Operation/Frdlink/linkList')}" title="返回列表页" >
+		<i class="Hui-iconfont">&#xe66b;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<form action="{:U('Operation/Frdlink/linkEdit')}" method="post" class="form form-horizontal" id="frm_link_save">
+		<if condition="$fid gt 0">
+		<input type="hidden" name="save" value="1" />
+		<input type="hidden" name="fid" value="{$fid}" />
+		<else />
+		<input type="hidden" name="add" value="1" />
+		</if>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>链接名：</label>
+			<div class="formControls col-6">
+				<if condition="$fid gt 0">
+				<input type="hidden" name="old_name" value="{$link_info.f_name}" />
+				</if>
+				<input type="text" class="input-text" value="{$link_info.f_name}" placeholder="" id="f_name" name="f_name" datatype="*" nullmsg="链接名不能为空！" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3"><span class="c-red">*</span>链接地址：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text" value="{$link_info.f_link}" placeholder="以http://开头" title="以http://开头" id="f_link" name="f_link" datatype="*" nullmsg="链接地址不能为空！" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">排序序号：</label>
+			<div class="formControls col-6">
+				<input type="text" class="input-text" value="{$link_info.f_order}" placeholder="排序数字越大越靠前" title="排序数字越大越靠前" id="f_order" name="f_order" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">状态：</label>
+			<div class="formControls col-6 skin-minimal">
+				<div class="radio-box">
+					<input type="radio" id="del_0" name="is_delete" value="0" checked />
+					<label for="del_0">启用</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" id="del_1" name="is_delete" value="1" <if condition="$meInfo['is_delete'] eq '1'">checked</if> />
+					<label for="del_1"><font color="red">禁用</font></label>
+				</div>
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-3">备注：</label>
+			<div class="formControls col-7">
+				<textarea name="f_desc" cols="" rows="" class="textarea" placeholder="说点什么...200个字符以内" dragonfly="true" onfocus="textarealength(this,200)" onKeyUp="textarealength(this,200)" maxlength="200">{$link_info.f_desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+			<div class="col-3"></div>
+		</div>
+		<div class="row cl">
+			<div class="col-9 col-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提 交&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<a class="btn btn-default radius" href="{:U('Operation/Frdlink/linkList')}">取 消</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#frm_link_save").Validform({
+		tiptype:2,
+	});
+});
+</script>
+</body>
+</html>

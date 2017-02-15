@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/icheck/jquery.icheck.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/Validform/5.3.2/Validform.min.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script>
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/ueditor/1.4.3/ueditor.config.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/ueditor/1.4.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js"></script>
+<title>网站文章详情页 - {$cfg_back.back_title}</title>
+</head>
+<body style="min-width:100%;">
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 文章/公告管理 
+	<span class="c-gray en">&gt;</span> 网站文章列表 
+	<span class="c-gray en">&gt;</span> 网站文章信息更改/添加 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="{:U('Article/Index/artList')}" title="返回列表页" >
+		<i class="Hui-iconfont">&#xe66b;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<form action="{:U('Webarticle/Index/artEdit')}" method="post" class="form form-horizontal" id="frm_art_save" enctype="multipart/form-data">
+		<if condition="$artInfo['art_id'] gt 0">
+		<input type="hidden" name="save" value="1" />
+		<input type="hidden" name="art_id" value="{$artInfo.art_id}" />
+		<else />
+		<input type="hidden" name="add" value="1" />
+		</if>
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>标题：</label>
+			<div class="formControls col-7">
+				<if condition="$artInfo['art_id'] gt 0">
+				<input type="hidden" name="old_title" value="{$artInfo.art_title}" />
+				</if>
+				<input type="text" class="input-text" value="{$artInfo.art_title}" placeholder="" id="art_title" name="art_title" datatype="*" nullmsg="文章标题不能为空！" maxlength="100" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">简介：</label>
+			<div class="formControls col-7">
+				<textarea name="art_desc" cols="" rows="" class="textarea" placeholder="说点什么...200个字符以内" dragonfly="true" onfocus="textarealength(this,200)" onKeyUp="textarealength(this,200)" maxlength="200">{$artInfo.art_desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">SEO标题：</label>
+			<div class="formControls col-7">
+				<input type="text" class="input-text" value="{$artInfo.seo_title}" placeholder="" id="seo_title" name="seo_title" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">SEO关键词：</label>
+			<div class="formControls col-7">
+				<input type="text" class="input-text" value="{$artInfo.seo_keywords}" placeholder="" id="seo_keywords" name="seo_keywords" />
+			</div>
+			<div class="col-3"> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-2">SEO描述：</label>
+			<div class="formControls col-7">
+				<textarea name="seo_desc" cols="" rows="" class="textarea" placeholder="说点什么...200个字符以内" dragonfly="true" onfocus="textarealength(this,200)" onKeyUp="textarealength(this,200)" maxlength="200">{$artInfo.seo_desc}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+			<div class="col-3"></div>
+		</div>
+		<if condition="1 neq 1">
+		<div class="row cl">
+			<label class="form-label col-2"><span class="c-red">*</span>文章内容：</label>
+			<div class="formControls col-9">
+				<script id="editor" type="text/plain" style="width:100%;height:400px;">{$artInfo.art_content}</script>
+			</div>
+		</div>
+		</if>
+		<div class="row cl">
+			<div class="col-9 col-offset-2">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" />&nbsp;&nbsp;
+				<a class="btn btn-default radius" href="{:U('Webarticle/Index/artList')}" title="返回列表页">取消</a>
+			</div>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#frm_art_save").Validform({
+		tiptype:2,
+	});
+	var ue = UE.getEditor('editor',{
+		//initialFrameWidth :800,//设置编辑器宽度
+		initialFrameHeight:600,//设置编辑器高度
+		scaleEnabled:false
+	});
+});
+</script>
+</body>
+</html>

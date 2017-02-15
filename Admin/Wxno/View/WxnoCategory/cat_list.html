@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="renderer" content="webkit|ie-comp|ie-stand" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" />
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/html5.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/respond.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/PIE_IE678.js"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/kill_ie/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<link href="<?php echo C('COMMON_RES_PATH');?>css/reset.css" rel="stylesheet" type="text/css" media="all" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/H-ui.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('BACK_RES_PATH');?>css/back.css" rel="stylesheet" type="text/css" />
+<link href="<?php echo C('COMMON_RES_PATH');?>lib/iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/layer.js"></script>
+<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.js"></script> 
+<script type="text/javascript" src="<?php echo C('BACK_RES_PATH');?>js/H-ui.admin.js"></script> 
+<title>微信公众号分类列表页 - {$cfg_back.back_title}</title>
+</head>
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<span class="c-gray en">&gt;</span> 公众号管理 
+	<span class="c-gray en">&gt;</span> 微信公众号分类列表 
+	<a class="btn btn-success radius r mr-20" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="pd-20">
+	<div class="cl pd-5 bg-1 bk-gray mt-20">
+		<if condition="$unabled_edit neq '1'">
+		<span class="l">
+			<a href="{:U('Wxno/WxnoCategory/catEdit')}" class="btn btn-primary radius">
+				<i class="Hui-iconfont">&#xe600;</i> 添加分类
+			</a>
+		</span>
+		</if>
+		<span class="r">共有数据：<strong><?php echo count($catList);?></strong> 条</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table_list">
+		<thead>
+			<tr>
+				<th scope="col" colspan="12">微信公众号分类列表</th>
+			</tr>
+			<tr class="text-c">
+				<th width="2%"><input type="checkbox" name="cat_ids[]" value="" /></th>
+				<th width=""> I D </th>
+				<th width="">分类名称</th>
+				<th width="">分类标识</th>
+				<th width="">排序</th>
+				<th width="">添加时间</th>
+				<th width="">是否启用</th>
+				<th width="">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="catList" id="tp" key="k">
+			<tr class="text-c">
+				<td><input type="checkbox" value="{$tp.cat_id}" name="cat_ids[]" /></td>
+				<td>{$tp.cat_id}</td>
+				<td>{$tp.cat_name}</td>
+				<td>[&nbsp;<font color="green">{$tp.cat_tag}</font>&nbsp;]</td>
+				<td><?php echo empty($tp['cat_order']) ? 0 : $tp['cat_order'];?></td>
+				<td>{$tp.add_time}</td>
+				<td class="td-status">
+					<if condition="$tp['is_delete'] eq '1'">
+					<span class="label radius">已禁用</span>
+					<else />
+					<span class="label label-success radius">已启用</span>
+					</if>
+				</td>
+				<td class="td-manage">
+				<if condition="$unabled_stop neq '1'">
+					<if condition="$tp['is_delete'] eq '1'">
+					<a onClick="cat_stop(this,'{$tp['cat_id']}','{$tp['cat_name']}','start')" href="javascript:;" title="启用">
+						<i class="Hui-iconfont">&#xe615;</i>
+					</a>
+					<else />
+					<a onClick="cat_stop(this,'{$tp['cat_id']}','{$tp['cat_name']}','stop')" href="javascript:;" title="禁用">
+						<i class="Hui-iconfont">&#xe631;</i>
+					</a>
+					</if>
+				</if>
+				<if condition="$unabled_edit neq '1'">
+					<a title="信息编辑" href="{:U('Wxno/WxnoCategory/catEdit',['cid'=>$tp['cat_id']])}" class="ml-5">
+						<i class="Hui-iconfont">&#xe6df;</i>
+					</a>
+				</if>
+				<if condition="$unabled_del neq '1'">
+					<a title="删除" href="javascript:;" onclick="cat_stop(this,'{$tp['cat_id']}','{$tp['cat_name']}','del')" class="ml-5">
+						<i class="Hui-iconfont">&#xe6e2;</i>
+					</a>
+				</if>
+				</td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<script type="text/javascript">
+layer.config({
+	skin:'layer-ext-espresso',
+	extend:'skin/espresso/style.css'
+});
+function type_edit(cat_id,cat_name,cat_tag,cat_order){
+	var show_content = 
+		"<form action=\"{:U('Wxno/WxnoCategory/catEdit')}\" method=\"post\" class=\"form form-horizontal\" id=\"form_ntp_edit\" onsubmit=\"return chk_catInfo()\" style=\"margin:30px 0px;\">"+
+		"	<input type=\"hidden\" name=\"old_name\" value=\""+cat_name+"\" />"+
+		"	<input type=\"hidden\" name=\"cat_id\" value=\""+cat_id+"\" />"+
+		"	<div class=\"row cl\">"+
+		"		<label class=\"form-label col-3\"><span class=\"c-red\">*</span>分类名称：</label>"+
+		"		<div class=\"formControls col-5\" style=\"width:69%;\">"+
+		"			<input type=\"text\" class=\"input-text\" value=\""+cat_name+"\" placeholder=\"\" id=\"cat_name\" name=\"cat_name\" />"+
+		"		</div>"+
+		"	</div>"+
+		"	<div class=\"row cl\">"+
+		"		<label class=\"form-label col-3\"><span class=\"c-red\">*</span>分类标识：</label>"+
+		"		<div class=\"formControls col-5\" style=\"width:69%;\">"+
+		"			<input type=\"text\" class=\"input-text\" value=\""+cat_tag+"\" placeholder=\"该分类的唯一标识\" id=\"cat_tag\" name=\"cat_tag\" />"+
+		"		</div>"+
+		"	</div>"+
+		"	<div class=\"row cl\">"+
+		"		<label class=\"form-label col-3\">排序：</label>"+
+		"		<div class=\"formControls col-5\" style=\"width:69%;\">"+
+		"			<input type=\"text\" class=\"input-text\" value=\""+cat_order+"\" placeholder=\"数字越大越靠前\" id=\"cat_order\" name=\"cat_order\" />"+
+		"		</div>"+
+		"	</div>"+
+		"	<div class=\"row cl\">"+
+		"		<div class=\"col-9 col-offset-3\">"+
+		"			<input class=\"btn btn-primary radius\" type=\"submit\" value=\"&nbsp;提&nbsp;交&nbsp;\" />&nbsp;&nbsp;"+
+		"			<input class=\"btn btn-default layui-layer-close radius\" type=\"button\" value=\"&nbsp;取&nbsp;消&nbsp;\" />"+
+		"		</div>"+
+		"	</div>"+
+		"</form>";
+	layer.open({
+		type: 1,
+		area: ['500px', '230px'],
+		title: false,
+		closeBtn: true,
+		shadeClose: false,
+		skin: 'yourclass',
+		content: show_content
+	})
+}
+function chk_catInfo(){
+	if ($('#cat_name').val()==''){
+		layer.alert('分类名称不能为空！',{icon:0});
+		$('#cat_name').focus();
+		return false;
+	}else if ($('#cat_tag').val()==''){
+		layer.alert('分类标识不能为空！',{icon:0});
+		$('#cat_tag').focus();
+		return false;
+	}else{
+		return true;
+	}
+}
+function cat_stop(obj,cat_id,cat_name,met){
+	if (met == 'stop'){
+		met = 'start';
+		manage_append = "<a onClick=\"cat_stop(this,'"+cat_id+"','"+cat_name+"','"+met+"')\" href=\"javascript:;\" title=\"启用\"><i class=\"Hui-iconfont\">&#xe615;</i></a>";
+		layer.confirm('确定要禁用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/WxnoCategory/catStop")}',
+				async: false,
+				data: {
+					"cat_id":cat_id,
+					"cat_name":cat_name,
+					"met":"stop"
+				},
+				dataType: "json",
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html("<span class=\"label radius\">已禁用</span>");
+						$(obj).remove();
+						layer.msg('已禁用，请刷新页面查看！',{icon:1,time:1000});
+					}else{
+						layer.msg('禁用公众号分类信息失败，请稍后重试！',{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'start'){
+		met = 'stop';
+		manage_append = "<a onClick=\"cat_stop(this,'"+cat_id+"','"+cat_name+"','"+met+"')\" href=\"javascript:;\" title=\"禁用\"><i class=\"Hui-iconfont\">&#xe631;</i></a>";
+		layer.confirm('确定要启用吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/WxnoCategory/catStop")}',
+				async: false,
+				data: {
+					"cat_id":cat_id,
+					"cat_name":cat_name,
+					"met":"start"
+				},
+				dataType: "json",
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").find(".td-manage").prepend(manage_append);
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+						$(obj).remove();
+						layer.msg('已启用，请刷新页面查看！', {icon:1,time:1000});
+					}else{
+						layer.msg('启用公众号分类信息失败，请稍后重试！',{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}else if (met == 'del'){
+		layer.confirm('确定要删除吗？',{icon:0},function(){
+			$.ajax({
+				type: "POST",
+				url: '{:U("Wxno/WxnoCategory/catDel")}',
+				async: false,
+				data: {
+					"cat_id":cat_id,
+					"cat_name":cat_name
+				},
+				dataType: "json",
+				success:function(js_msg){
+					if (js_msg.code==1){
+						$(obj).parents("tr").remove();
+						layer.msg('已删除，请刷新页面查看!',{icon:1,time:1000});
+					}else{
+						layer.msg('删除公众号分类信息失败，请稍后重试！',{icon:9,time:3000});
+					}
+				},
+				error:function(msg){
+					layer.msg('系统异常！',{icon:9,time:3000});
+				}
+			});
+		});
+	}
+}
+</script>
+</body>
+</html>
