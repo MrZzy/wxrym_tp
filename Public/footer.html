@@ -127,29 +127,6 @@ $(document).ready(function(){
 		<button type="submit">搜 索</button>
 	</form>
 </div>
-<?php 
-require_once '/Mobile_Detect.php';
-$mobile_det = new Mobile_Detect();
-if ($mobile_det->isMobile()){
-?>
-<script type="text/javascript" src="<?php echo C('COMMON_RES_PATH');?>lib/layer/2.1/mobile/m.layer.js"></script>
-<script type="text/javascript">
-function show_search(){
-	//页面层
-	layer.open({
-		type: 1,
-		content: $('.wx_search_box'),
-		anim: 0,
-		shadeClose: true,
-		shade: 0.5,
-		title: false,
-		skin: 'search_layer',
-	});
-}
-</script>
-<?php
-}else{
-?>
 <script type="text/javascript">
 layer.config({
     extend: ['skin/espresso/style.css'] //加载新皮肤
@@ -168,9 +145,6 @@ function show_search(){
 	});
 }
 </script>
-<?php
-}
-?>
 <!--footer end-->
 </body>
 </html>
